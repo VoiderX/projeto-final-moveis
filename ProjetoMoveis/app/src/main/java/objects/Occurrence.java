@@ -1,6 +1,8 @@
 package objects;
 
-public class Occurrence {
+import java.io.Serializable;
+
+public class Occurrence implements Serializable{
     private String message;
 
     public Occurrence(String message) {

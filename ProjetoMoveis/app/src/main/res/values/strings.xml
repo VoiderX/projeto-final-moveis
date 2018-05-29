@@ -3,4 +3,12 @@
     <string name="create_registry">Insert new product</string>
     <string name="show_all">Show all recorded products</string>
     <string name="expires_on">This warranty expires on</string>
+    <string name="about">About</string>
+    <string name="add_product">Add Product</string>
+    <string name="delete_product">Delete product</string>
+    <string name="edit_product">Edit Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_brand">Product Brand</string>
+    <string name="purchase_date">Purchase Date</string>
+    <string name="warranty_time">Warranty Time</string>
 </resources>

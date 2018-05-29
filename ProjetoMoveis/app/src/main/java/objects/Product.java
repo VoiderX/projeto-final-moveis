@@ -5,6 +5,7 @@ import android.util.JsonWriter;
 
 import com.example.gabriel.projetomoveis.R;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +16,7 @@ import java.util.ResourceBundle;
 
 import Utils.ConverterUtils;
 
-public class Product {
+public class Product implements Serializable {
     private GregorianCalendar purchaseDate;
     private String name;
     private String brand;
