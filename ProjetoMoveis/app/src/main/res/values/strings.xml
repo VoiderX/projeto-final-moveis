@@ -11,4 +11,6 @@
     <string name="product_brand">Product Brand</string>
     <string name="purchase_date">Purchase Date</string>
     <string name="warranty_time">Warranty Time</string>
+    <string name="save">Save</string>
+    <string name="add_occurrence">Add occurrence</string>
 </resources>

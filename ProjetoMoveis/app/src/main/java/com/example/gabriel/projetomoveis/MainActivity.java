@@ -9,7 +9,10 @@ Sistema para controle de garantia de produtos comprados, o usuário pode registr
 */
 package com.example.gabriel.projetomoveis;
 
+import android.arch.lifecycle.Observer;
+import android.arch.persistence.room.Room;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -25,14 +28,19 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import database.AppDatabase;
+import database.DatabaseHandler;
 import objects.Product;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PRODUCT_OBJ = "PRODUCT_OBJ";
+
     private static final String PRODUCT_KEY = "productName";
     private static final String DATE_KEY = "remainingWarranty";
+
     private ArrayList<Product> products=null;
     private ListView productsList;
 
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ProductActivity.call(view.getContext(),products.get(position));
+                openProduct(view,position);
             }
         });
         //Setting multi-choice configuration
@@ -100,8 +108,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        products= dummyPopulateList();
-        loadProductList();
+        new DatabaseHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(@Nullable List<Product> products) {
+                setProducts(new ArrayList<>(products));
+                loadProductList();
+                System.out.println("testando");
+            }
+        });
+        //products= getAllFromDatabase();
+        //loadProductList();
     }
 
     //MENU METHODS
@@ -128,17 +144,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNewProduct() {
-        System.out.println("Adicionando produto!");
+        ProductActivity.call(this);
     }
-
     private void removeProduct() {
         System.out.println("Removendo produto");
     }
-
     private void updateProduct() {
         System.out.println("Atualizando produto");
     }
-
+    private void openProduct(View view, int position){
+        ProductActivity.call(view.getContext(),products.get(position));
+    }
     private void showAbout() {
         System.out.println("Show about!");
     }
@@ -157,7 +173,11 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{PRODUCT_KEY, DATE_KEY}, new int[]{android.R.id.text1, android.R.id.text2});
         productsList.setAdapter(simpleAdapter);
     }
-
+    //Methods to get data form database
+    private ArrayList<Product> getAllFromDatabase(){
+        return new ArrayList<>();
+        //return new ArrayList<>(AppDatabase.getDatabase(this.getApplicationContext()).productDAO().getAll());
+    }
     //basic method to generate sample data
     private ArrayList<Product> dummyPopulateList() {
         ArrayList<Product> dummyProducts = new ArrayList<>();
@@ -167,5 +187,9 @@ public class MainActivity extends AppCompatActivity {
             dummyProducts.add(product);
         }
         return dummyProducts;
+    }
+    //Operational methods
+    private void setProducts(ArrayList<Product> products) {
+        this.products = products;
     }
 }
