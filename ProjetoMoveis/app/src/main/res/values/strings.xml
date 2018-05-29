@@ -2,4 +2,5 @@
     <string name="app_name">RMA Assistant</string>
     <string name="create_registry">Insert new product</string>
     <string name="show_all">Show all recorded products</string>
+    <string name="expires_on">This warranty expires on</string>
 </resources>

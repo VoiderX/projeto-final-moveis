@@ -3,12 +3,15 @@ package objects;
 import android.text.format.DateUtils;
 import android.util.JsonWriter;
 
+import com.example.gabriel.projetomoveis.R;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import Utils.ConverterUtils;
 
@@ -70,6 +73,13 @@ public class Product {
         this.occurrences = occurrences;
     }
 
+    public String getExpirationDate() {
+        GregorianCalendar expirationDate =
+                new GregorianCalendar(purchaseDate.get(Calendar.YEAR) + warrantyTime, purchaseDate.get(Calendar.MONTH),
+                        purchaseDate.get(Calendar.DAY_OF_MONTH));
+        return ConverterUtils.convertDateToString(expirationDate.getTime());
+    }
+
     @Override
     public String toString() {
         String converted;
@@ -77,7 +87,7 @@ public class Product {
                 "name: " + name + "\n" +
                 "brand: " + brand + "\n" +
                 "warranty time: " + warrantyTime + "\n" +
-                "purchase date: "+ ConverterUtils.convertDateToString(purchaseDate.getTime());
+                "purchase date: " + ConverterUtils.convertDateToString(purchaseDate.getTime());
         return converted;
     }
 }
