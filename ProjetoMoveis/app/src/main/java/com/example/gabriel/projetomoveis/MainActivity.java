@@ -179,15 +179,15 @@ public class MainActivity extends AppCompatActivity {
         //return new ArrayList<>(AppDatabase.getDatabase(this.getApplicationContext()).productDAO().getAll());
     }
     //basic method to generate sample data
-    private ArrayList<Product> dummyPopulateList() {
-        ArrayList<Product> dummyProducts = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Product product = new Product(new GregorianCalendar(2018, GregorianCalendar.MAY, 30),
-                    "Product " + i, "Brand " + i, 5);
-            dummyProducts.add(product);
-        }
-        return dummyProducts;
-    }
+//    private ArrayList<Product> dummyPopulateList() {
+//        ArrayList<Product> dummyProducts = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            Product product = new Product(new GregorianCalendar(2018, GregorianCalendar.MAY, 30),
+//                    "Product " + i, "Brand " + i, 5);
+//            dummyProducts.add(product);
+//        }
+//        return dummyProducts;
+//    }
     //Operational methods
     private void setProducts(ArrayList<Product> products) {
         this.products = products;

@@ -4,9 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
-import android.support.v4.widget.CircularProgressDrawable;
 
 
 import java.io.Serializable;
@@ -23,10 +21,8 @@ public class Product implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @TypeConverters(ConverterUtils.class)
-    @ColumnInfo(name="purchaseDate")
-    private Date databaseDate;
-    @Ignore
-    private GregorianCalendar purchaseDate;
+    @ColumnInfo(name = "purchaseDate")
+    private Date purchaseDate;
     @ColumnInfo(name = "name")
     private String name;
     @ColumnInfo(name = "brand")
@@ -36,25 +32,14 @@ public class Product implements Serializable {
     @Ignore
     private ArrayList<Occurrence> occurrences;
 
-    public Product(GregorianCalendar purchaseDate, String name, String brand, int warrantyTime) {
+
+    public Product(Date purchaseDate, String name, String brand, int warrantyTime) {
         this.purchaseDate = purchaseDate;
         this.name = name;
         this.brand = brand;
         this.warrantyTime = warrantyTime;
-        databaseDate=purchaseDate.getTime();
     }
 
-    public Product() {
-    }
-
-    public GregorianCalendar getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(GregorianCalendar purchaseDate) {
-        databaseDate=purchaseDate.getTime();
-        this.purchaseDate = purchaseDate;
-    }
 
     public String getName() {
         return name;
@@ -88,14 +73,6 @@ public class Product implements Serializable {
         this.occurrences = occurrences;
     }
 
-    public String getExpirationDate() {
-        GregorianCalendar expirationDate =
-                new GregorianCalendar(purchaseDate.get(Calendar.YEAR) + warrantyTime, purchaseDate.get(Calendar.MONTH),
-                        purchaseDate.get(Calendar.DAY_OF_MONTH));
-
-        return ConverterUtils.convertDateToString(expirationDate.getTime());
-        //return "nao tá funfando";
-    }
 
     @Override
     public String toString() {
@@ -104,7 +81,7 @@ public class Product implements Serializable {
                 "name: " + name + "\n" +
                 "brand: " + brand + "\n" +
                 "warranty time: " + warrantyTime + "\n" +
-                "purchase date: " + ConverterUtils.convertDateToString(purchaseDate.getTime());
+                "purchase date: ";
         return converted;
     }
 
@@ -116,13 +93,18 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Date getDatabaseDate() {
-        return databaseDate;
+    public String getExpirationDate() {
+        GregorianCalendar temp = new GregorianCalendar();
+        temp.setTime(purchaseDate);
+        temp.set(Calendar.YEAR,temp.get(Calendar.YEAR)+warrantyTime);
+        return ConverterUtils.convertDateToString(temp.getTime());
     }
 
-    public void setDatabaseDate(Date databaseDate) {
-        purchaseDate = new GregorianCalendar();
-        this.databaseDate = databaseDate;
-        purchaseDate.setTime(databaseDate);
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 }

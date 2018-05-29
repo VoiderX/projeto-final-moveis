@@ -8,7 +8,7 @@ import android.content.Context;
 import database.daos.ProductDAO;
 import objects.Product;
 
-@Database(entities = {Product.class}, version = 3)
+@Database(entities = {Product.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ProductDAO productDAO();
 

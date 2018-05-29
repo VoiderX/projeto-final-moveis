@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 import Utils.ConverterUtils;
 import database.DatabaseHandler;
@@ -62,14 +66,17 @@ public class ProductActivity extends AppCompatActivity {
         primaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Product product= new Product();
-                product.setBrand("Samsung");
-                product.setName("Galaxy J7");
-                GregorianCalendar gc = new GregorianCalendar();
-                gc.setTime(new Date());
-                product.setPurchaseDate(gc);
-                product.setWarrantyTime(2);
-                new DatabaseHandler(getApplication()).insert(product);
+                try {
+                    Product product =
+                            new Product(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()),
+                                    nameEditText.getText().toString(),brandEditText.getText().toString(),
+                                    Integer.parseInt(warrantyEditText.getText().toString()));
+                    System.out.println(product);
+                    new DatabaseHandler(getApplication()).insert(product);
+                }catch(ParseException e){
+                    e.printStackTrace();
+                    Toast.makeText(v.getContext(),"Invalid date!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -95,7 +102,7 @@ public class ProductActivity extends AppCompatActivity {
         Product product = (Product) bundle.getSerializable(MainActivity.PRODUCT_OBJ);
         nameEditText.setText(product.getName());
         brandEditText.setText(product.getBrand());
-        purchaseEditText.setText(ConverterUtils.convertDateToString(product.getPurchaseDate().getTime()));
+        purchaseEditText.setText(ConverterUtils.convertDateToString(product.getPurchaseDate()));
         warrantyEditText.setText(Integer.toString(product.getWarrantyTime()));
     }
 }
