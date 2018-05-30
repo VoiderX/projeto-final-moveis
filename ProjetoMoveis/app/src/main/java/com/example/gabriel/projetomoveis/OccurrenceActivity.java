@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -49,8 +54,16 @@ public class OccurrenceActivity extends AppCompatActivity {
         Product product = ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
         setTitle(product.getName());
 
-        generateSampleDate();
+        generateSampleData();
         loadOccurrenceList();
+
+        occurrencesList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        occurrencesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateOccurrence(getIntent().getExtras(),position);
+            }
+        });
     }
 
     public static void call(Context context, Product product) {
@@ -61,6 +74,9 @@ public class OccurrenceActivity extends AppCompatActivity {
 
     private void addOccurrence(Bundle bundle) {
         OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ));
+    }
+    private void updateOccurrence(Bundle bundle,int position){
+        OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ),occurrences.get(position));
     }
 
     private void loadOccurrenceList() {
@@ -87,7 +103,7 @@ public class OccurrenceActivity extends AppCompatActivity {
         return true;
     }
 
-    private void generateSampleDate() {
+    private void generateSampleData() {
         occurrences = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
             try {
@@ -98,6 +114,36 @@ public class OccurrenceActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener(){
+        AbsListView.MultiChoiceModeListener listener = new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        };
+        return listener;
     }
 
 }

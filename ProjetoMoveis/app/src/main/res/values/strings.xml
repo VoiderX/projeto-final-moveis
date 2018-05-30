@@ -20,4 +20,6 @@
     <string name="occurrence_date">Occurrence Date</string>
     <string name="description_hint">Description (Optional)</string>
     <string name="occurrence_title">Occurrence Title</string>
+    <string name="save_occurrence">Save Occurrence</string>
+    <string name="delete_occurrence">Delete Occurrence</string>
 </resources>

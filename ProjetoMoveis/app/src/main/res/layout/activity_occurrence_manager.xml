@@ -55,7 +55,7 @@
 
     <Button
         android:id="@+id/primaryOccurrenceButton"
-        android:layout_width="160dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -71,7 +71,7 @@
 
     <Button
         android:id="@+id/secondaryOccurrenceButton"
-        android:layout_width="160dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
