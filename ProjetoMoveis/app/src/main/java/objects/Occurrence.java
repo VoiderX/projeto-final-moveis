@@ -8,9 +8,9 @@ public class Occurrence implements Serializable{
     private String title;
     private String message;
 
-    public Occurrence(Date date, String message) {
+    public Occurrence(Date date, String title) {
         this.date = date;
-        this.message = message;
+        this.title = title;
     }
 
     public String getMessage() {
