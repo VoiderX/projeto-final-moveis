@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 
 import objects.Occurrence;
 import objects.Product;
@@ -17,7 +18,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
     private static final int EDIT_MODE = 2;
 
     private Button primaryButton, secondaryButton;
-
+    private EditText titleEditText,dateEditText,descriptionEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,16 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         startElements();
     }
 
+    //Methods to configure and start this activity
     private void startElements() {
         primaryButton = findViewById(R.id.primaryOccurrenceButton);
         secondaryButton = findViewById(R.id.secondaryOccurrenceButton);
+        titleEditText= findViewById(R.id.nameOccurrenceEditText);
+        dateEditText=findViewById(R.id.dateOccurenceEditText);
+        descriptionEditText=findViewById(R.id.descriptionOccurrenceEditText);
     }
 
+    //Methods to call this activity
     public static void call(Context context, Product product) {
         Intent intent = new Intent(context, OccurrenceManagerActivity.class);
         intent.putExtra(MODE, ADD_MODE);

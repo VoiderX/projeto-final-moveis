@@ -29,9 +29,6 @@ public class OccurrenceActivity extends AppCompatActivity {
     private ListView occurrencesList;
     private ArrayList<Occurrence> occurrences;
 
-    public OccurrenceActivity() {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

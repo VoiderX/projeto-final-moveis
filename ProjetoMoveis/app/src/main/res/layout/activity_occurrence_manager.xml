@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/occurenceDateEditText"
+        android:id="@+id/dateOccurenceEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nameOccurrenceEditText" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/descriptionOccurrenceEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/occurenceDateEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/dateOccurenceEditText" />
 
     <Button
         android:id="@+id/primaryOccurrenceButton"
@@ -66,7 +66,7 @@
         app:layout_constraintEnd_toStartOf="@+id/secondaryOccurrenceButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionOccurrenceEditText"
         app:layout_constraintVertical_bias="0.738" />
 
     <Button
@@ -81,6 +81,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/primaryOccurrenceButton"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionOccurrenceEditText"
         app:layout_constraintVertical_bias="0.738" />
 </android.support.constraint.ConstraintLayout>
