@@ -10,7 +10,6 @@ Sistema para controle de garantia de produtos comprados, o usuário pode registr
 package com.example.gabriel.projetomoveis;
 
 import android.arch.lifecycle.Observer;
-import android.arch.persistence.room.Room;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,18 +20,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import database.AppDatabase;
-import database.DatabaseHandler;
+import database.ProductDAOHandler;
 import objects.Product;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PRODUCT_KEY = "productName";
     private static final String DATE_KEY = "remainingWarranty";
 
-    private ArrayList<Product> products=null;
+    private ArrayList<Product> products = null;
     private ListView productsList;
 
     @Override
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openProduct(view,position);
+                updateProduct(position);
             }
         });
         //Setting multi-choice configuration
@@ -90,14 +86,20 @@ public class MainActivity extends AppCompatActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.deleteMenuItem:
-                        removeProduct();
+                        removeProducts(getAllSelectedProducts());
                         break;
                     case R.id.editMenuItem:
-                        updateProduct();
+                        for(int i=0; i<productsList.getChildCount();i++){
+                            if(productsList.isItemChecked(i)){
+                                updateProduct(i);
+                                break;
+                            }
+                        }
                         break;
                     default:
                         return false;
                 }
+                mode.finish();
                 return true;
             }
 
@@ -108,16 +110,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        new DatabaseHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
+        new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(@Nullable List<Product> products) {
                 setProducts(new ArrayList<>(products));
                 loadProductList();
-                System.out.println("testando");
             }
         });
         //products= getAllFromDatabase();
         //loadProductList();
+    }
+
+    public Product[] getAllSelectedProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (int i = 0; i < productsList.getChildCount(); i++) {
+            if (productsList.isItemChecked(i)) {
+                products.add(this.products.get(i));
+            }
+        }
+        Product[] arrayProducts = new Product[products.size()];
+        for (int i = 0; i < products.size(); i++) {
+            arrayProducts[i] = products.get(i);
+        }
+        return arrayProducts;
     }
 
     //MENU METHODS
@@ -138,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 return false;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -146,15 +160,14 @@ public class MainActivity extends AppCompatActivity {
     private void addNewProduct() {
         ProductActivity.call(this);
     }
-    private void removeProduct() {
-        System.out.println("Removendo produto");
+
+    private void removeProducts(Product... products) {
+        new ProductDAOHandler(getApplication()).delete(products);
     }
-    private void updateProduct() {
-        System.out.println("Atualizando produto");
+    private void updateProduct(int position) {
+        ProductActivity.call(this, products.get(position));
     }
-    private void openProduct(View view, int position){
-        ProductActivity.call(view.getContext(),products.get(position));
-    }
+
     private void showAbout() {
         System.out.println("Show about!");
     }
@@ -173,11 +186,8 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{PRODUCT_KEY, DATE_KEY}, new int[]{android.R.id.text1, android.R.id.text2});
         productsList.setAdapter(simpleAdapter);
     }
-    //Methods to get data form database
-    private ArrayList<Product> getAllFromDatabase(){
-        return new ArrayList<>();
-        //return new ArrayList<>(AppDatabase.getDatabase(this.getApplicationContext()).productDAO().getAll());
-    }
+
+
     //basic method to generate sample data
 //    private ArrayList<Product> dummyPopulateList() {
 //        ArrayList<Product> dummyProducts = new ArrayList<>();

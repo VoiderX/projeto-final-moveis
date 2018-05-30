@@ -1,14 +1,14 @@
 package objects;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class Occurrence implements Serializable{
-    private GregorianCalendar date;
+    private Date date;
     private String title;
     private String message;
 
-    public Occurrence(GregorianCalendar date, String message) {
+    public Occurrence(Date date, String message) {
         this.date = date;
         this.message = message;
     }
@@ -21,11 +21,11 @@ public class Occurrence implements Serializable{
         this.message = message;
     }
 
-    public GregorianCalendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(GregorianCalendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

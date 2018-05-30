@@ -13,4 +13,7 @@
     <string name="warranty_time">Warranty Time</string>
     <string name="save">Save</string>
     <string name="add_occurrence">Add occurrence</string>
+    <string name="invalid_date">Invalid date!</string>
+    <string name="invalid_input">Invalid Input!</string>
+    <string name="unknow_error">Unknown Error, contact the developer!</string>
 </resources>
