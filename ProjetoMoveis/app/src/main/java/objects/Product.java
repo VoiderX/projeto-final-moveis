@@ -20,6 +20,7 @@ import Utils.ConverterUtils;
 @Entity(tableName = "product")
 public class Product implements Serializable {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name= "id")
     private int id;
     @TypeConverters(ConverterUtils.class)
     @ColumnInfo(name = "purchaseDate")
