@@ -2,6 +2,7 @@ package com.example.gabriel.projetomoveis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.PluralRules;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,7 @@ public class OccurrenceActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addOccurrence();
+                addOccurrence(getIntent().getExtras());
             }
         });
 
@@ -61,8 +62,8 @@ public class OccurrenceActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    private void addOccurrence() {
-        System.out.println("Add occurrence");
+    private void addOccurrence(Bundle bundle) {
+        OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ));
     }
 
     private void loadOccurrenceList() {
