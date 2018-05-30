@@ -20,7 +20,8 @@
         <activity
             android:name=".OccurrenceActivity"
             android:label="@string/title_activity_occurrence"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".OccurrenceManagerActivity"></activity>
     </application>
 
 </manifest>

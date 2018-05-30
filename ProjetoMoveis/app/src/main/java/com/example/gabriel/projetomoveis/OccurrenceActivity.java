@@ -93,7 +93,9 @@ public class OccurrenceActivity extends AppCompatActivity {
         occurrences = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
             try {
-                occurrences.add(new Occurrence(ConverterUtils.convertStringToDate("10/25/2018"), "Occurrence " + i));
+                Occurrence occurrence =new Occurrence(ConverterUtils.convertStringToDate("10/25/2018"), "Occurrence " + i);
+                occurrence.setMessage(occurrence.getTitle()+ " Body");
+                occurrences.add(occurrence);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
