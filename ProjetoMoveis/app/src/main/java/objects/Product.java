@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 
 
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,7 +82,7 @@ public class Product implements Serializable {
                 "name: " + name + "\n" +
                 "brand: " + brand + "\n" +
                 "warranty time: " + warrantyTime + "\n" +
-                "purchase date: ";
+                "purchase date: "+ ConverterUtils.convertDateToString(purchaseDate);
         return converted;
     }
 

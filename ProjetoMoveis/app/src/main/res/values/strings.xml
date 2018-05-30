@@ -16,4 +16,5 @@
     <string name="invalid_date">Invalid date!</string>
     <string name="invalid_input">Invalid Input!</string>
     <string name="unknow_error">Unknown Error, contact the developer!</string>
+    <string name="title_activity_occurrence">OccurrenceActivity</string>
 </resources>

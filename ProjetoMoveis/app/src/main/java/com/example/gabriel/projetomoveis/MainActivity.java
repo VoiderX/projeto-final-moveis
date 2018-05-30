@@ -55,70 +55,9 @@ public class MainActivity extends AppCompatActivity {
         });
         //Setting multi-choice configuration
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        productsList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                if (productsList.isItemChecked(position)) {
-                    productsList.getChildAt(position).setBackgroundColor(Color.LTGRAY);
-                } else {
-                    productsList.getChildAt(position).setBackgroundColor(Color.TRANSPARENT);
-                }
-                mode.invalidate();
-            }
+        productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
+        startDatabaseObserver();
 
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.getMenuInflater().inflate(R.menu.selected_one, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                if (productsList.getCheckedItemCount() > 1) {
-                    menu.getItem(0).setVisible(false);
-                } else {
-                    menu.getItem(0).setVisible(true);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.deleteMenuItem:
-                        removeProducts(getAllSelectedProducts());
-                        break;
-                    case R.id.editMenuItem:
-                        for(int i=0; i<productsList.getChildCount();i++){
-                            if(productsList.isItemChecked(i)){
-                                updateProduct(i);
-                                break;
-                            }
-                        }
-                        break;
-                    default:
-                        return false;
-                }
-                mode.finish();
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                for (int i = 0; i < productsList.getChildCount(); i++) {
-                    productsList.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-                }
-            }
-        });
-        new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
-            @Override
-            public void onChanged(@Nullable List<Product> products) {
-                setProducts(new ArrayList<>(products));
-                loadProductList();
-            }
-        });
-        //products= getAllFromDatabase();
-        //loadProductList();
     }
 
     public Product[] getAllSelectedProducts() {
@@ -164,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     private void removeProducts(Product... products) {
         new ProductDAOHandler(getApplication()).delete(products);
     }
+
     private void updateProduct(int position) {
         ProductActivity.call(this, products.get(position));
     }
@@ -202,4 +142,75 @@ public class MainActivity extends AppCompatActivity {
     private void setProducts(ArrayList<Product> products) {
         this.products = products;
     }
+
+    private void startDatabaseObserver() {
+        new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(@Nullable List<Product> products) {
+                setProducts(new ArrayList<>(products));
+                loadProductList();
+            }
+        });
+    }
+
+    private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener() {
+        AbsListView.MultiChoiceModeListener listener;
+        listener = new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                if (productsList.isItemChecked(position)) {
+                    productsList.getChildAt(position).setBackgroundColor(Color.LTGRAY);
+                } else {
+                    productsList.getChildAt(position).setBackgroundColor(Color.TRANSPARENT);
+                }
+                mode.invalidate();
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.getMenuInflater().inflate(R.menu.selected_one, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                if (productsList.getCheckedItemCount() > 1) {
+                    menu.getItem(0).setVisible(false);
+                } else {
+                    menu.getItem(0).setVisible(true);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.deleteMenuItem:
+                        removeProducts(getAllSelectedProducts());
+                        break;
+                    case R.id.editMenuItem:
+                        for (int i = 0; i < productsList.getChildCount(); i++) {
+                            if (productsList.isItemChecked(i)) {
+                                updateProduct(i);
+                                break;
+                            }
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+                mode.finish();
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                for (int i = 0; i < productsList.getChildCount(); i++) {
+                    productsList.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                }
+            }
+        };
+        return listener;
+    }
+
 }

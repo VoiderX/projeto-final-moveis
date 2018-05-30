@@ -16,6 +16,7 @@ import java.text.ParseException;
 
 import Utils.ConverterUtils;
 import database.ProductDAOHandler;
+import objects.Occurrence;
 import objects.Product;
 
 public class ProductActivity extends AppCompatActivity {
@@ -38,7 +39,6 @@ public class ProductActivity extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 
 
     //Method to read the mode in which the activity was started
@@ -88,7 +88,8 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
     }
-    private void prepareForEdit(Bundle bundle) {
+
+    private void prepareForEdit(final Bundle bundle) {
         setTitle(R.string.edit_product);
         final Product product = loadProductData(bundle);
         secondaryButton.setVisibility(View.VISIBLE);
@@ -120,7 +121,7 @@ public class ProductActivity extends AppCompatActivity {
         secondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAddOccurences();
+                openAddOccurences(bundle);
             }
         });
     }
@@ -130,8 +131,8 @@ public class ProductActivity extends AppCompatActivity {
         new ProductDAOHandler(getApplication()).update(product);
     }
 
-    private void openAddOccurences() {
-        System.out.println("Open Occurrences");
+    private void openAddOccurences(Bundle bundle) {
+        OccurrenceActivity.call(this, (Product) bundle.getSerializable(OccurrenceActivity.PRODUCT_OBJ));
     }
 
     private void validateFields() throws FormatException {
@@ -166,7 +167,7 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
