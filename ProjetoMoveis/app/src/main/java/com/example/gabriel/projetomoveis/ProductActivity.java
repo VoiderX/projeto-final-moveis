@@ -36,7 +36,10 @@ public class ProductActivity extends AppCompatActivity {
         } else {
             prepareForAdd();
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
 
     //Method to read the mode in which the activity was started
     private int readMode(Bundle bundle) {
@@ -166,5 +169,11 @@ public class ProductActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main,menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
