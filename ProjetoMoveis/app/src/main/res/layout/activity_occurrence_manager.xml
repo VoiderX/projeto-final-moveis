@@ -15,8 +15,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:ems="10"
+        android:hint="@string/occurrence_title"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/occurenceDateEditText" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/primaryOccurrenceButton"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -63,14 +63,14 @@
         android:layout_marginTop="8dp"
         android:text="Primary Action"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintEnd_toStartOf="@+id/secondaryOccurrenceButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText3"
         app:layout_constraintVertical_bias="0.738" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/secondaryOccurrenceButton"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -80,7 +80,7 @@
         android:text="Secondary Action"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/primaryOccurrenceButton"
         app:layout_constraintTop_toBottomOf="@+id/editText3"
         app:layout_constraintVertical_bias="0.738" />
 </android.support.constraint.ConstraintLayout>
