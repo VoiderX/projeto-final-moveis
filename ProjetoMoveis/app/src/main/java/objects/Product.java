@@ -20,7 +20,7 @@ import Utils.ConverterUtils;
 @Entity(tableName = "product")
 public class Product implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name= "id")
+    @ColumnInfo(name = "id")
     private int id;
     @TypeConverters(ConverterUtils.class)
     @ColumnInfo(name = "purchaseDate")
@@ -31,8 +31,6 @@ public class Product implements Serializable {
     private String brand;
     @ColumnInfo(name = "warrantyTime")
     private int warrantyTime;
-    @Ignore
-    private ArrayList<Occurrence> occurrences;
 
 
     public Product(Date purchaseDate, String name, String brand, int warrantyTime) {
@@ -67,15 +65,6 @@ public class Product implements Serializable {
         this.warrantyTime = warrantyTime;
     }
 
-    public ArrayList<Occurrence> getOccurrences() {
-        return occurrences;
-    }
-
-    public void setOccurrences(ArrayList<Occurrence> occurrences) {
-        this.occurrences = occurrences;
-    }
-
-
     @Override
     public String toString() {
         String converted;
@@ -83,7 +72,7 @@ public class Product implements Serializable {
                 "name: " + name + "\n" +
                 "brand: " + brand + "\n" +
                 "warranty time: " + warrantyTime + "\n" +
-                "purchase date: "+ ConverterUtils.convertDateToString(purchaseDate);
+                "purchase date: " + ConverterUtils.convertDateToString(purchaseDate);
         return converted;
     }
 
@@ -98,7 +87,7 @@ public class Product implements Serializable {
     public String getExpirationDate() {
         GregorianCalendar temp = new GregorianCalendar();
         temp.setTime(purchaseDate);
-        temp.set(Calendar.YEAR,temp.get(Calendar.YEAR)+warrantyTime);
+        temp.set(Calendar.YEAR, temp.get(Calendar.YEAR) + warrantyTime);
         return ConverterUtils.convertDateToString(temp.getTime());
     }
 

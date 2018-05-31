@@ -6,25 +6,31 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import Utils.ConverterUtils;
-@Entity(foreignKeys = @ForeignKey(entity = Product.class,parentColumns = "id",childColumns = "title"))
+@Entity(primaryKeys ={"idOwner","title"},
+        tableName = "occurrence",foreignKeys = @ForeignKey(entity = Product.class,parentColumns = "id",childColumns = "idOwner",onDelete = ForeignKey.CASCADE))
 public class Occurrence implements Serializable{
     @TypeConverters(ConverterUtils.class)
     @ColumnInfo(name ="date")
     private Date date;
-    @PrimaryKey
+    @NonNull
     @ColumnInfo(name="title")
     private String title;
     @ColumnInfo(name="message")
     private String message;
+    @ColumnInfo(name = "idOwner")
+    private int idOwner;
 
-    public Occurrence(Date date, String title) {
+    public Occurrence(Date date, String title, String message, int idOwner) {
         this.date = date;
         this.title = title;
+        this.message = message;
+        this.idOwner = idOwner;
     }
 
     public String getMessage() {
@@ -49,5 +55,13 @@ public class Occurrence implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getIdOwner() {
+        return idOwner;
+    }
+
+    public void setIdOwner(int idOwner) {
+        this.idOwner = idOwner;
     }
 }

@@ -1,9 +1,11 @@
 package com.example.gabriel.projetomoveis;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.PluralRules;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,9 +22,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import Utils.ConverterUtils;
+import database.handlers.OccurrenceDAOHandler;
+import database.handlers.ProductDAOHandler;
 import objects.Occurrence;
 import objects.Product;
 
@@ -32,7 +37,7 @@ public class OccurrenceActivity extends AppCompatActivity {
     private static String TITLE_KEY = "TITLE";
 
     private ListView occurrencesList;
-    private ArrayList<Occurrence> occurrences;
+    private ArrayList<Occurrence> occurrences= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,6 @@ public class OccurrenceActivity extends AppCompatActivity {
         Product product = ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
         setTitle(product.getName());
 
-        generateSampleData();
-        loadOccurrenceList();
 
         occurrencesList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         occurrencesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,6 +67,8 @@ public class OccurrenceActivity extends AppCompatActivity {
                 updateOccurrence(getIntent().getExtras(),position);
             }
         });
+
+        startDatabaseObserver(product.getId());
     }
 
     public static void call(Context context, Product product) {
@@ -78,7 +83,15 @@ public class OccurrenceActivity extends AppCompatActivity {
     private void updateOccurrence(Bundle bundle,int position){
         OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ),occurrences.get(position));
     }
-
+    private void startDatabaseObserver(int id){
+        new OccurrenceDAOHandler(getApplication(),id).getAllOccurrences().observe(this, new Observer<List<Occurrence>>() {
+            @Override
+            public void onChanged(@Nullable List<Occurrence> occurrences) {
+                setOccurrences(new ArrayList<>(occurrences));
+                loadOccurrenceList();
+            }
+        });
+    }
     private void loadOccurrenceList() {
         ArrayList<Map<String, String>> formattedData = new ArrayList<>();
         for (Occurrence occurrence : occurrences) {
@@ -103,18 +116,18 @@ public class OccurrenceActivity extends AppCompatActivity {
         return true;
     }
 
-    private void generateSampleData() {
-        occurrences = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
-            try {
-                Occurrence occurrence =new Occurrence(ConverterUtils.convertStringToDate("10/25/2018"), "Occurrence " + i);
-                occurrence.setMessage(occurrence.getTitle()+ " Body");
-                occurrences.add(occurrence);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    private void generateSampleData() {
+//        occurrences = new ArrayList<>();
+//        for (int i = 1; i < 11; i++) {
+//            try {
+//                Occurrence occurrence =new Occurrence(ConverterUtils.convertStringToDate("10/25/2018"), "Occurrence " + i);
+//                occurrence.setMessage(occurrence.getTitle()+ " Body");
+//                occurrences.add(occurrence);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener(){
         AbsListView.MultiChoiceModeListener listener = new AbsListView.MultiChoiceModeListener() {
@@ -146,4 +159,7 @@ public class OccurrenceActivity extends AppCompatActivity {
         return listener;
     }
 
+    public void setOccurrences(ArrayList<Occurrence> occurrences) {
+        this.occurrences = occurrences;
+    }
 }

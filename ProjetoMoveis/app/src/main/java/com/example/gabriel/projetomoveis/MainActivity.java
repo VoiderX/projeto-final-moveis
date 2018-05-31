@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import database.ProductDAOHandler;
+import database.handlers.ProductDAOHandler;
 import objects.Product;
 
 public class MainActivity extends AppCompatActivity {

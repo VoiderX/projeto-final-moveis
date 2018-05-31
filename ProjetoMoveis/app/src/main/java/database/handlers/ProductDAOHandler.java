@@ -1,4 +1,4 @@
-package database;
+package database.handlers;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import java.util.List;
 
+import database.AppDatabase;
 import database.daos.ProductDAO;
 import objects.Product;
 
@@ -63,6 +64,7 @@ public class ProductDAOHandler {
             return null;
         }
     }
+
     private static class updateAsyncTask extends AsyncTask<Product,Void,Void>{
         private ProductDAO productDAO;
 

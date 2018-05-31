@@ -5,12 +5,15 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import database.daos.OccurrenceDAO;
 import database.daos.ProductDAO;
+import objects.Occurrence;
 import objects.Product;
 
-@Database(entities = {Product.class}, version = 1)
+@Database(entities = {Product.class,Occurrence.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ProductDAO productDAO();
+    public abstract OccurrenceDAO occurrenceDAO();
 
     private static AppDatabase INSTANCE;
 

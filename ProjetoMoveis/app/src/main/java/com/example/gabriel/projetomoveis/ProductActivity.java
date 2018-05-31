@@ -3,7 +3,6 @@ package com.example.gabriel.projetomoveis;
 import android.content.Context;
 import android.content.Intent;
 import android.nfc.FormatException;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 
 import Utils.ConverterUtils;
-import database.ProductDAOHandler;
-import objects.Occurrence;
+import database.handlers.ProductDAOHandler;
 import objects.Product;
 
 public class ProductActivity extends AppCompatActivity {
