@@ -23,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.example.gabriel.projetomoveis.ListAdapters.ProductListAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String PRODUCT_KEY = "productName";
     private static final String DATE_KEY = "remainingWarranty";
 
-    private ArrayList<Product> products = null;
+    private ArrayList<Product> products;
     private ListView productsList;
+    private ProductListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         //Setting multi-choice configuration
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
+        products = new ArrayList<>();
+        adapter = new ProductListAdapter(this, products);
+        productsList.setAdapter(adapter);
     }
 
 
@@ -94,31 +100,25 @@ public class MainActivity extends AppCompatActivity {
         this.products = products;
     }
 
+    private ArrayList<Product> getProducts() {
+        return this.products;
+    }
+
     private void startDatabaseObserver() {
         new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(@Nullable List<Product> products) {
-                setProducts(new ArrayList<>(products));
-                loadProductList();
+                getProducts().clear();
+                getProducts().addAll(products);
+                for (Product product : getProducts()) {
+                    System.out.println(product);
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
 
     //LIST METHODS
-    //method to load the list from an array of products
-    private void loadProductList() {
-        ArrayList<Map<String, String>> formattedData = new ArrayList<>();
-        for (Product product : products) {
-            Map<String, String> listRow = new HashMap<>(2);
-            listRow.put(PRODUCT_KEY, product.getName());
-            listRow.put(DATE_KEY, getResources().getString(R.string.expires_on) + " " + product.getExpirationDate());
-            formattedData.add(listRow);
-        }
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, formattedData, android.R.layout.simple_list_item_2,
-                new String[]{PRODUCT_KEY, DATE_KEY}, new int[]{android.R.id.text1, android.R.id.text2});
-        productsList.setAdapter(simpleAdapter);
-    }
-
     public Product[] getAllSelectedProducts() {
         ArrayList<Product> products = new ArrayList<>();
         for (int i = 0; i < productsList.getChildCount(); i++) {
@@ -139,11 +139,8 @@ public class MainActivity extends AppCompatActivity {
         listener = new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                if (productsList.isItemChecked(position)) {
-                    productsList.getChildAt(position).setBackgroundColor(Color.LTGRAY);
-                } else {
-                    productsList.getChildAt(position).setBackgroundColor(Color.TRANSPARENT);
-                }
+                adapter.toggleItemSelection(position);
+                adapter.notifyDataSetChanged();
                 mode.invalidate();
             }
 
@@ -155,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                if (productsList.getCheckedItemCount() > 1) {
+                if (adapter.getSelectedItems().size()> 1) {
                     menu.getItem(0).setVisible(false);
                 } else {
                     menu.getItem(0).setVisible(true);
@@ -170,12 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         removeProducts(getAllSelectedProducts());
                         break;
                     case R.id.editMenuItem:
-                        for (int i = 0; i < productsList.getChildCount(); i++) {
-                            if (productsList.isItemChecked(i)) {
-                                updateProduct(i);
-                                break;
-                            }
-                        }
+                        updateProduct(adapter.getSelectedItems().get(0));
                         break;
                     default:
                         return false;
@@ -186,9 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                for (int i = 0; i < productsList.getChildCount(); i++) {
-                    productsList.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-                }
+                adapter.getSelectedItems().clear();
+                adapter.notifyDataSetChanged();
             }
         };
         return listener;
