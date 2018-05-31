@@ -35,10 +35,6 @@ import objects.Product;
 
 public class MainActivity extends AppCompatActivity {
     public static final String PRODUCT_OBJ = "PRODUCT_OBJ";
-
-    private static final String PRODUCT_KEY = "productName";
-    private static final String DATE_KEY = "remainingWarranty";
-
     private ArrayList<Product> products;
     private ListView productsList;
     private ProductListAdapter adapter;
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
         products = new ArrayList<>();
-        adapter = new ProductListAdapter(this, products,getString(R.string.expires_on));
+        adapter = new ProductListAdapter(this, products, getString(R.string.expires_on));
         productsList.setAdapter(adapter);
     }
 
@@ -76,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void removeProducts(Product... products) {
         new ProductDAOHandler(getApplication()).delete(products);
     }
+
     //Methods to call another activities
     private void addNewProduct() {
         ProductActivity.call(this);
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                adapter.getSelectedItems().clear();
+                adapter.clearSelection();
                 adapter.notifyDataSetChanged();
             }
         };

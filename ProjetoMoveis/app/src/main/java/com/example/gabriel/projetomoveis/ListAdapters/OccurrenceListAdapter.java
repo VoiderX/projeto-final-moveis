@@ -10,33 +10,35 @@ import android.widget.TextView;
 
 import com.example.gabriel.projetomoveis.R;
 
+
 import java.util.ArrayList;
 
-import objects.Product;
+import Utils.ConverterUtils;
+import objects.Occurrence;
 
-public class ProductListAdapter extends BaseAdapter {
-    private ArrayList<Product> products;
-    private ArrayList<Integer> selectedProducts;
-    private String expiresMessage;
+public class OccurrenceListAdapter extends BaseAdapter {
+    Context context;
+    private ArrayList<Occurrence> occurrences;
+    private ArrayList<Integer> selectedOccurrences;
+
 
     private class LayoutItems {
-        TextView productName;
-        TextView expirationDate;
+        TextView occurrenceTitle;
+        TextView occurrenceDate;
     }
 
     private static LayoutInflater inflater = null;
 
-    public ProductListAdapter(Context context, ArrayList<Product> products, String expiresMessage) {
-        Context context1 = context;
-        this.products = products;
+    public OccurrenceListAdapter(Context context, ArrayList<Occurrence> occurrences) {
+        this.context = context;
+        this.occurrences = occurrences;
+        selectedOccurrences = new ArrayList<>();
         inflater = (LayoutInflater) (context.getSystemService(context.LAYOUT_INFLATER_SERVICE));
-        selectedProducts = new ArrayList<>();
-        this.expiresMessage = expiresMessage;
     }
 
     @Override
     public int getCount() {
-        return products.size();
+        return occurrences.size();
     }
 
     @Override
@@ -52,21 +54,22 @@ public class ProductListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.layout_product_list_item, null);
+            convertView = inflater.inflate(R.layout.layout_occcurrence_list_item, null);
         }
         LayoutItems li = new LayoutItems();
-        li.productName = convertView.findViewById(R.id.occurrenceTitleListItem);
-        li.expirationDate = convertView.findViewById(R.id.occurrenceDateListItem);
+        li.occurrenceTitle = convertView.findViewById(R.id.occurrenceTitleListItem);
+        li.occurrenceDate = convertView.findViewById(R.id.occurrenceDateListItem);
 
-        li.productName.setText(products.get(position).getName());
-        li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
+        li.occurrenceTitle.setText(occurrences.get(position).getTitle());
+        li.occurrenceDate.setText(ConverterUtils.convertDateToString(occurrences.get(position).getDate()));
 
-        changeBackGroundColor(position,convertView);
+        changeBackGroundColor(position, convertView);
+
         return convertView;
     }
 
     private void changeBackGroundColor(int position, View convertView) {
-        if (selectedProducts.contains(position)) {
+        if (selectedOccurrences.contains(position)) {
             convertView.setBackgroundColor(Color.LTGRAY);
         } else {
             convertView.setBackgroundColor(Color.TRANSPARENT);
@@ -74,19 +77,18 @@ public class ProductListAdapter extends BaseAdapter {
     }
 
     public void toggleItemSelection(int position) {
-        if (selectedProducts.contains(position)) {
-            selectedProducts.remove(new Integer(position));
+        if (selectedOccurrences.contains(position)) {
+            selectedOccurrences.remove(new Integer(position));
         } else {
-            selectedProducts.add(position);
+            selectedOccurrences.add(position);
         }
     }
 
     public ArrayList<Integer> getSelectedItems() {
-        return selectedProducts;
+        return selectedOccurrences;
     }
 
     public void clearSelection() {
-        selectedProducts.clear();
+        selectedOccurrences.clear();
     }
-
 }
