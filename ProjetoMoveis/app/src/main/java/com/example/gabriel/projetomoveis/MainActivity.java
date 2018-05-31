@@ -65,27 +65,6 @@ public class MainActivity extends AppCompatActivity {
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
     }
 
-    //MENU METHODS
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.addMenuItem:
-                addNewProduct();
-                break;
-            case R.id.aboutMenuItem:
-                showAbout();
-                break;
-            default:
-                return false;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     //Methods to manage data
     private void removeProducts(Product... products) {
@@ -101,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         ProductActivity.call(this, products.get(position));
     }
 
-    private void openOccurrences(Product product){
-        OccurrenceActivity.call(this,product);
+    private void openOccurrences(Product product) {
+        OccurrenceActivity.call(this, product);
     }
 
     private void showAbout() {
@@ -213,6 +192,28 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         return listener;
+    }
+
+    //MENU METHODS
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.addMenuItem:
+                addNewProduct();
+                break;
+            case R.id.aboutMenuItem:
+                showAbout();
+                break;
+            default:
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

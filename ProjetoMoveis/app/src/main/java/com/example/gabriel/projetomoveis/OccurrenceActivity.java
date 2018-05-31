@@ -106,12 +106,6 @@ public class OccurrenceActivity extends AppCompatActivity {
         });
     }
 
-    //Menu methods
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
 
     //List methods
     private void loadOccurrenceList() {
@@ -157,5 +151,17 @@ public class OccurrenceActivity extends AppCompatActivity {
         };
         return listener;
     }
+    //Menu methods
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        menu.getItem(0).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
 }
