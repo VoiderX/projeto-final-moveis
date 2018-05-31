@@ -22,4 +22,6 @@
     <string name="occurrence_title">Occurrence Title</string>
     <string name="save_occurrence">Save Occurrence</string>
     <string name="delete_occurrence">Delete Occurrence</string>
+    <string name="open_occurrences">Open Occurrences</string>
+    <string name="manage_product">Manage Product</string>
 </resources>

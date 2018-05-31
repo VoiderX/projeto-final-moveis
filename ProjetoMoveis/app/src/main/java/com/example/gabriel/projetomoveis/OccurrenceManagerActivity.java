@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.text.ParseException;
 
 import Utils.ConverterUtils;
+import database.handlers.OccurrenceDAOHandler;
 import objects.Occurrence;
 import objects.Product;
 
@@ -20,8 +24,9 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
     private static final int EDIT_MODE = 2;
 
     private Button primaryButton, secondaryButton;
-    private EditText titleEditText,dateEditText,descriptionEditText;
+    private EditText titleEditText, dateEditText, descriptionEditText;
 
+    private Occurrence occurrence;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,34 +34,53 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         startElements();
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle.getInt(MODE)==ADD_MODE){
+        if (bundle.getInt(MODE) == ADD_MODE) {
             prepareForAdd();
-        }else{
+        } else {
             prepareForEdit(bundle);
         }
+
     }
 
     //Methods to configure and start this activity
     private void startElements() {
         primaryButton = findViewById(R.id.primaryOccurrenceButton);
         secondaryButton = findViewById(R.id.secondaryOccurrenceButton);
-        titleEditText= findViewById(R.id.nameOccurrenceEditText);
-        dateEditText=findViewById(R.id.dateOccurenceEditText);
-        descriptionEditText=findViewById(R.id.descriptionOccurrenceEditText);
+        titleEditText = findViewById(R.id.nameOccurrenceEditText);
+        dateEditText = findViewById(R.id.dateOccurenceEditText);
+        descriptionEditText = findViewById(R.id.descriptionOccurrenceEditText);
     }
 
-    private void prepareForAdd(){
+    private void prepareForAdd() {
         primaryButton.setText(R.string.add_occurrence);
+        primaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Occurrence occurrence = new Occurrence(
+                            ConverterUtils.convertStringToDate(dateEditText.getText().toString()),
+                            titleEditText.getText().toString(), descriptionEditText.getText().toString(),
+                            ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ)).getId());
+                    addOccurence(occurrence);
+                } catch (ParseException e) {
+                    Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         secondaryButton.setVisibility(View.INVISIBLE);
     }
-    private void prepareForEdit(Bundle bundle){
-        primaryButton.setText(R.string.save_occurrence);
-        secondaryButton.setText(R.string.delete_occurrence);
-        loadOccurrence(bundle);
+    private void addOccurence(Occurrence occurrence){
+        new OccurrenceDAOHandler(getApplication()).insert(occurrence);
     }
 
-    private Occurrence loadOccurrence(Bundle bundle){
-        Occurrence occurrence= (Occurrence) bundle.getSerializable(OCCURRENCE_OBJ);
+    private void prepareForEdit(Bundle bundle) {
+        primaryButton.setText(R.string.save_occurrence);
+        secondaryButton.setText(R.string.delete_occurrence);
+        occurrence=loadOccurrence(bundle);
+    }
+
+    private Occurrence loadOccurrence(Bundle bundle) {
+        Occurrence occurrence = (Occurrence) bundle.getSerializable(OCCURRENCE_OBJ);
         titleEditText.setText(occurrence.getTitle());
         dateEditText.setText(ConverterUtils.convertDateToString(occurrence.getDate()));
         descriptionEditText.setText(occurrence.getMessage());

@@ -74,7 +74,7 @@ public class ProductActivity extends AppCompatActivity {
                             new Product(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()),
                                     nameEditText.getText().toString(), brandEditText.getText().toString(),
                                     Integer.parseInt(warrantyEditText.getText().toString()));
-                    new ProductDAOHandler(getApplication()).insert(product);
+                    addProduct(product);
                     finish();
                 } catch (ParseException e) {
                     Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
@@ -88,11 +88,11 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     private void prepareForEdit(final Bundle bundle) {
-        setTitle(R.string.edit_product);
+        setTitle(getString(R.string.manage_product));
         final Product product = loadProductData(bundle);
         secondaryButton.setVisibility(View.VISIBLE);
         primaryButton.setText(R.string.save);
-        secondaryButton.setText(R.string.add_occurrence);
+        secondaryButton.setText(R.string.open_occurrences);
 
         primaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,23 +124,21 @@ public class ProductActivity extends AppCompatActivity {
         });
     }
 
-    public void editProduct(Product product) {
-        System.out.println("Edit product!");
+    //Methods to manage data
+    private void addProduct(Product product) {
+        new ProductDAOHandler(getApplication()).insert(product);
+    }
+
+    private void editProduct(Product product) {
         new ProductDAOHandler(getApplication()).update(product);
     }
 
+    //Method to call another activity
     private void openAddOccurences(Bundle bundle) {
         OccurrenceActivity.call(this, (Product) bundle.getSerializable(OccurrenceActivity.PRODUCT_OBJ));
+        finish();
     }
 
-    private void validateFields() throws FormatException {
-        if (purchaseEditText.getText().toString().isEmpty()
-                || nameEditText.getText().toString().isEmpty()
-                || brandEditText.getText().toString().isEmpty()
-                || warrantyEditText.getText().toString().isEmpty()) {
-            throw new FormatException();
-        }
-    }
 
     //Method to map the interface ids inside the class
     private void startElements() {
@@ -163,6 +161,17 @@ public class ProductActivity extends AppCompatActivity {
         return product;
     }
 
+    //Utility method to validate the fields
+    private void validateFields() throws FormatException {
+        if (purchaseEditText.getText().toString().isEmpty()
+                || nameEditText.getText().toString().isEmpty()
+                || brandEditText.getText().toString().isEmpty()
+                || warrantyEditText.getText().toString().isEmpty()) {
+            throw new FormatException();
+        }
+    }
+
+    //Menu methods
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);

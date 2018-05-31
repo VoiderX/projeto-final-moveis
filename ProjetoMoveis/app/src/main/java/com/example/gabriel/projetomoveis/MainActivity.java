@@ -61,19 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public Product[] getAllSelectedProducts() {
-        ArrayList<Product> products = new ArrayList<>();
-        for (int i = 0; i < productsList.getChildCount(); i++) {
-            if (productsList.isItemChecked(i)) {
-                products.add(this.products.get(i));
-            }
-        }
-        Product[] arrayProducts = new Product[products.size()];
-        for (int i = 0; i < products.size(); i++) {
-            arrayProducts[i] = products.get(i);
-        }
-        return arrayProducts;
-    }
 
     //MENU METHODS
     @Override
@@ -97,12 +84,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void addNewProduct() {
-        ProductActivity.call(this);
-    }
-
+    //Methods to manage data
     private void removeProducts(Product... products) {
         new ProductDAOHandler(getApplication()).delete(products);
+    }
+
+    //Methods to call another activities
+    private void addNewProduct() {
+        ProductActivity.call(this);
     }
 
     private void updateProduct(int position) {
@@ -111,6 +100,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void showAbout() {
         System.out.println("Show about!");
+    }
+
+
+    //Operational methods
+    private void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
+
+    private void startDatabaseObserver() {
+        new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(@Nullable List<Product> products) {
+                setProducts(new ArrayList<>(products));
+                loadProductList();
+            }
+        });
     }
 
     //LIST METHODS
@@ -128,32 +133,21 @@ public class MainActivity extends AppCompatActivity {
         productsList.setAdapter(simpleAdapter);
     }
 
-
-    //basic method to generate sample data
-//    private ArrayList<Product> dummyPopulateList() {
-//        ArrayList<Product> dummyProducts = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            Product product = new Product(new GregorianCalendar(2018, GregorianCalendar.MAY, 30),
-//                    "Product " + i, "Brand " + i, 5);
-//            dummyProducts.add(product);
-//        }
-//        return dummyProducts;
-//    }
-    //Operational methods
-    private void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
-
-    private void startDatabaseObserver() {
-        new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
-            @Override
-            public void onChanged(@Nullable List<Product> products) {
-                setProducts(new ArrayList<>(products));
-                loadProductList();
+    public Product[] getAllSelectedProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (int i = 0; i < productsList.getChildCount(); i++) {
+            if (productsList.isItemChecked(i)) {
+                products.add(this.products.get(i));
             }
-        });
+        }
+        Product[] arrayProducts = new Product[products.size()];
+        for (int i = 0; i < products.size(); i++) {
+            arrayProducts[i] = products.get(i);
+        }
+        return arrayProducts;
     }
 
+    //Method to set the multi choice mode on list view
     private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener() {
         AbsListView.MultiChoiceModeListener listener;
         listener = new AbsListView.MultiChoiceModeListener() {
