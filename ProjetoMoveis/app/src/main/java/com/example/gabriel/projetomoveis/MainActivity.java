@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
         products = new ArrayList<>();
-        adapter = new ProductListAdapter(this, products);
+        adapter = new ProductListAdapter(this, products,getString(R.string.expires_on));
         productsList.setAdapter(adapter);
     }
 
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
     private void removeProducts(Product... products) {
         new ProductDAOHandler(getApplication()).delete(products);
     }
-
     //Methods to call another activities
     private void addNewProduct() {
         ProductActivity.call(this);
@@ -94,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Show about!");
     }
 
-
     //Operational methods
-    private void setProducts(ArrayList<Product> products) {
-        this.products = products;
+    private void setProducts(List<Product> products) {
+        getProducts().clear();
+        getProducts().addAll(products);
     }
 
     private ArrayList<Product> getProducts() {
@@ -108,11 +107,7 @@ public class MainActivity extends AppCompatActivity {
         new ProductDAOHandler(this.getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(@Nullable List<Product> products) {
-                getProducts().clear();
-                getProducts().addAll(products);
-                for (Product product : getProducts()) {
-                    System.out.println(product);
-                }
+                setProducts(products);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -120,15 +115,9 @@ public class MainActivity extends AppCompatActivity {
 
     //LIST METHODS
     public Product[] getAllSelectedProducts() {
-        ArrayList<Product> products = new ArrayList<>();
-        for (int i = 0; i < productsList.getChildCount(); i++) {
-            if (productsList.isItemChecked(i)) {
-                products.add(this.products.get(i));
-            }
-        }
-        Product[] arrayProducts = new Product[products.size()];
-        for (int i = 0; i < products.size(); i++) {
-            arrayProducts[i] = products.get(i);
+        Product[] arrayProducts = new Product[adapter.getSelectedItems().size()];
+        for (int i = 0; i < adapter.getSelectedItems().size(); i++) {
+            arrayProducts[i] = products.get(adapter.getSelectedItems().get(i));
         }
         return arrayProducts;
     }
@@ -152,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                if (adapter.getSelectedItems().size()> 1) {
+                if (adapter.getSelectedItems().size() > 1) {
                     menu.getItem(0).setVisible(false);
                 } else {
                     menu.getItem(0).setVisible(true);

@@ -18,6 +18,7 @@ public class ProductListAdapter extends BaseAdapter {
     Context context;
     private ArrayList<Product> products;
     private ArrayList<Integer> selectedProducts;
+    private String expiresMessage;
 
     private class LayoutItems {
         TextView productName;
@@ -26,11 +27,12 @@ public class ProductListAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
-    public ProductListAdapter(Context context, ArrayList<Product> products) {
+    public ProductListAdapter(Context context, ArrayList<Product> products,String expiresMessage) {
         this.context = context;
         this.products = products;
         inflater = (LayoutInflater) (context.getSystemService(context.LAYOUT_INFLATER_SERVICE));
-        selectedProducts= new ArrayList<>();
+        selectedProducts = new ArrayList<>();
+        this.expiresMessage=expiresMessage;
     }
 
     @Override
@@ -58,10 +60,11 @@ public class ProductListAdapter extends BaseAdapter {
         li.expirationDate = convertView.findViewById(R.id.expirationDateProductItem);
 
         li.productName.setText(products.get(position).getName());
-        li.expirationDate.setText(products.get(position).getExpirationDate());
-        if(selectedProducts.contains(position)){
+
+        li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
+        if (selectedProducts.contains(position)) {
             convertView.setBackgroundColor(Color.LTGRAY);
-        }else{
+        } else {
             convertView.setBackgroundColor(Color.TRANSPARENT);
         }
         return convertView;
