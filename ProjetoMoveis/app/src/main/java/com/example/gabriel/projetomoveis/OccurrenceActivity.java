@@ -37,12 +37,13 @@ public class OccurrenceActivity extends AppCompatActivity {
     private static String TITLE_KEY = "TITLE";
 
     private ListView occurrencesList;
-    private ArrayList<Occurrence> occurrences= new ArrayList<>();
+    private ArrayList<Occurrence> occurrences = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence);
+        //Starting floating button
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -54,20 +55,11 @@ public class OccurrenceActivity extends AppCompatActivity {
         });
 
         startElements();
+        //Enabling UP button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        //Setting title and activating database observer
         Product product = ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
         setTitle(product.getName());
-
-
-        occurrencesList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
-        occurrencesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateOccurrence(getIntent().getExtras(),position);
-            }
-        });
-
         startDatabaseObserver(product.getId());
     }
 
@@ -77,14 +69,35 @@ public class OccurrenceActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    //Methods to call another activities
     private void addOccurrence(Bundle bundle) {
-        OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ));
+        OccurrenceManagerActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ));
     }
-    private void updateOccurrence(Bundle bundle,int position){
-        OccurrenceManagerActivity.call(this,(Product) bundle.getSerializable(PRODUCT_OBJ),occurrences.get(position));
+
+    private void updateOccurrence(Bundle bundle, int position) {
+        OccurrenceManagerActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ), occurrences.get(position));
     }
-    private void startDatabaseObserver(int id){
-        new OccurrenceDAOHandler(getApplication(),id).getAllOccurrences().observe(this, new Observer<List<Occurrence>>() {
+
+    //Method to set this  activity
+    private void startElements() {
+        occurrencesList = findViewById(R.id.occurrenceList);
+        occurrencesList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        occurrencesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateOccurrence(getIntent().getExtras(), position);
+            }
+        });
+    }
+
+
+    //Operational Methods
+    public void setOccurrences(ArrayList<Occurrence> occurrences) {
+        this.occurrences = occurrences;
+    }
+
+    private void startDatabaseObserver(int id) {
+        new OccurrenceDAOHandler(getApplication(), id).getAllOccurrences().observe(this, new Observer<List<Occurrence>>() {
             @Override
             public void onChanged(@Nullable List<Occurrence> occurrences) {
                 setOccurrences(new ArrayList<>(occurrences));
@@ -92,6 +105,15 @@ public class OccurrenceActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Menu methods
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    //List methods
     private void loadOccurrenceList() {
         ArrayList<Map<String, String>> formattedData = new ArrayList<>();
         for (Occurrence occurrence : occurrences) {
@@ -101,35 +123,12 @@ public class OccurrenceActivity extends AppCompatActivity {
             formattedData.add(listRow);
         }
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, formattedData, android.R.layout.simple_list_item_2,
-                new String[]{DATE_KEY, TITLE_KEY}, new int[]{android.R.id.text1, android.R.id.text2});
-            occurrencesList.setAdapter(simpleAdapter);
+                new String[]{TITLE_KEY, DATE_KEY}, new int[]{android.R.id.text1, android.R.id.text2});
+        occurrencesList.setAdapter(simpleAdapter);
 
     }
 
-    private void startElements() {
-        occurrencesList = findViewById(R.id.occurrenceList);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
-    }
-
-//    private void generateSampleData() {
-//        occurrences = new ArrayList<>();
-//        for (int i = 1; i < 11; i++) {
-//            try {
-//                Occurrence occurrence =new Occurrence(ConverterUtils.convertStringToDate("10/25/2018"), "Occurrence " + i);
-//                occurrence.setMessage(occurrence.getTitle()+ " Body");
-//                occurrences.add(occurrence);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-    private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener(){
+    private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener() {
         AbsListView.MultiChoiceModeListener listener = new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
@@ -159,7 +158,4 @@ public class OccurrenceActivity extends AppCompatActivity {
         return listener;
     }
 
-    public void setOccurrences(ArrayList<Occurrence> occurrences) {
-        this.occurrences = occurrences;
-    }
 }

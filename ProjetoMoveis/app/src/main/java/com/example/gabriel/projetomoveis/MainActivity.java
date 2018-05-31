@@ -44,23 +44,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Start application
+        startElements();
+        startDatabaseObserver();
+    }
 
+    //Setting methods
+    private void startElements() {
         //Mapping elements
         productsList = findViewById(R.id.productsList);
         //Setting individual element click listener
         productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                updateProduct(position);
+                openOccurrences(products.get(position));
             }
         });
         //Setting multi-choice configuration
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
-        startDatabaseObserver();
-
     }
-
 
     //MENU METHODS
     @Override
@@ -96,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateProduct(int position) {
         ProductActivity.call(this, products.get(position));
+    }
+
+    private void openOccurrences(Product product){
+        OccurrenceActivity.call(this,product);
     }
 
     private void showAbout() {

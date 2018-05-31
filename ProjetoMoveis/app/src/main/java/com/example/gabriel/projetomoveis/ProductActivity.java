@@ -28,6 +28,7 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+
         startElements();
         Bundle bundle = getIntent().getExtras();
         if (readMode(bundle) == EDIT_MODE) {
@@ -35,6 +36,7 @@ public class ProductActivity extends AppCompatActivity {
         } else {
             prepareForAdd();
         }
+        //Enabling UP button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

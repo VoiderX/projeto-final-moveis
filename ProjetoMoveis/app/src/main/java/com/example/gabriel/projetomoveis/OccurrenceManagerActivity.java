@@ -27,12 +27,13 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
     private EditText titleEditText, dateEditText, descriptionEditText;
 
     private Occurrence occurrence;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence_manager);
         startElements();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         if (bundle.getInt(MODE) == ADD_MODE) {
             prepareForAdd();
@@ -52,6 +53,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
     }
 
     private void prepareForAdd() {
+        setTitle(R.string.add_occurrence);
         primaryButton.setText(R.string.add_occurrence);
         primaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,14 +71,12 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         });
         secondaryButton.setVisibility(View.INVISIBLE);
     }
-    private void addOccurence(Occurrence occurrence){
-        new OccurrenceDAOHandler(getApplication()).insert(occurrence);
-    }
 
     private void prepareForEdit(Bundle bundle) {
+        setTitle(getString(R.string.manage_occurrence));
         primaryButton.setText(R.string.save_occurrence);
         secondaryButton.setText(R.string.delete_occurrence);
-        occurrence=loadOccurrence(bundle);
+        occurrence = loadOccurrence(bundle);
     }
 
     private Occurrence loadOccurrence(Bundle bundle) {
@@ -86,7 +86,11 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         descriptionEditText.setText(occurrence.getMessage());
         return occurrence;
     }
-
+    //Methods to handle date
+    private void addOccurence(Occurrence occurrence) {
+        new OccurrenceDAOHandler(getApplication()).insert(occurrence);
+        finish();
+    }
 
     //Methods to call this activity
     public static void call(Context context, Product product) {
@@ -103,7 +107,12 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         intent.putExtra(OCCURRENCE_OBJ, occurrence);
         context.startActivity(intent);
     }
-
+    //Menu methods
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
 }
 
 
