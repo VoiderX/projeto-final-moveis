@@ -64,7 +64,8 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
                             ConverterUtils.convertStringToDate(dateEditText.getText().toString()),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
                             ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ)).getId());
-                    addOccurence(occurrence);
+                    addOccurrence(occurrence);
+                    finish();
                 } catch (ParseException e) {
                     Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
                 }
@@ -78,6 +79,20 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         primaryButton.setText(R.string.save_occurrence);
         secondaryButton.setText(R.string.delete_occurrence);
         occurrence = loadOccurrence(bundle);
+        final Occurrence old = new Occurrence(occurrence.getDate(),occurrence.getTitle(),occurrence.getMessage(),occurrence.getIdOwner());
+        primaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    occurrence.setMessage(descriptionEditText.getText().toString());
+                    occurrence.setDate(ConverterUtils.convertStringToDate(dateEditText.getText().toString()));
+                    occurrence.setTitle(titleEditText.getText().toString());
+                    updateOccurrence(old, occurrence);
+                } catch (ParseException e) {
+                    Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private Occurrence loadOccurrence(Bundle bundle) {
@@ -87,11 +102,24 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         descriptionEditText.setText(occurrence.getMessage());
         return occurrence;
     }
-    //Methods to handle date
-    private void addOccurence(Occurrence occurrence) {
+
+    //Methods to handle data
+    private void deleteOccurrence(Occurrence occurrence) {
+        new OccurrenceDAOHandler(getApplication()).delete(occurrence);
+    }
+
+    private void addOccurrence(Occurrence occurrence) {
         new OccurrenceDAOHandler(getApplication()).insert(occurrence);
+    }
+
+    private void updateOccurrence(Occurrence old, Occurrence newer) {
+        System.out.println(old);
+        System.out.println(newer);
+        deleteOccurrence(old);
+        addOccurrence(newer);
         finish();
     }
+
 
     //Methods to call this activity
     public static void call(Context context, Product product) {
@@ -108,6 +136,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         intent.putExtra(OCCURRENCE_OBJ, occurrence);
         context.startActivity(intent);
     }
+
     //Menu methods
     @Override
     public boolean onSupportNavigateUp() {
@@ -117,7 +146,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }

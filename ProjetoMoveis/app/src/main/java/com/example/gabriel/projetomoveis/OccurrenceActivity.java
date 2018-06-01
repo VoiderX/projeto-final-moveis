@@ -119,6 +119,14 @@ public class OccurrenceActivity extends AppCompatActivity {
 
 
     //List methods
+    private Occurrence[] getAllSelectedOccurrences() {
+        Occurrence[] occurrences = new Occurrence[adapter.getSelectedItems().size()];
+        for (int i = 0; i < occurrences.length; i++) {
+            occurrences[i] = getOccurrences().get(adapter.getSelectedItems().get(i));
+        }
+        return occurrences;
+    }
+
     private AbsListView.MultiChoiceModeListener getMultiChoiceModeListener() {
         AbsListView.MultiChoiceModeListener listener = new AbsListView.MultiChoiceModeListener() {
             @Override
@@ -147,15 +155,31 @@ public class OccurrenceActivity extends AppCompatActivity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.editMenuItem:
+                        updateOccurrence(getIntent().getExtras(), adapter.getSelectedItems().get(0));
+                        break;
+                    case R.id.deleteMenuItem:
+                        removeOccurrences(getAllSelectedOccurrences());
+                        break;
+                }
+                mode.finish();
                 return true;
             }
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                adapter.clearSelection();
+                adapter.notifyDataSetChanged();
                 toolbar.setVisibility(View.VISIBLE);
             }
         };
         return listener;
+    }
+
+    //Methods to handle data
+    private void removeOccurrences(Occurrence... occurrences) {
+        new OccurrenceDAOHandler(getApplication()).delete(occurrences);
     }
 
     //Menu methods

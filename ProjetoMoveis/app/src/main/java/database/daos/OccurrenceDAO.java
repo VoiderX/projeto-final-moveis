@@ -2,6 +2,7 @@ package database.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -15,4 +16,6 @@ public interface OccurrenceDAO {
     LiveData<List<Occurrence>> getAllOccurrencesFromProduct(int id);
     @Insert
     void insertOccurrences(Occurrence... occurrences);
+    @Delete
+    void deleteOccurrences(Occurrence... occurrences);
 }

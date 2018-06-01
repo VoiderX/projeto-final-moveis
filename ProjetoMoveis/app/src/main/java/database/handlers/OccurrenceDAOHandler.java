@@ -34,6 +34,10 @@ public class OccurrenceDAOHandler {
         new insertAsyncTask(occurrenceDAO).execute(occurrences);
     }
 
+    public void delete(Occurrence... occurrences) {
+        new deleteAsyncTask(occurrenceDAO).execute(occurrences);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Occurrence, Void, Void> {
         private OccurrenceDAO occurrenceDAO;
 
@@ -47,4 +51,20 @@ public class OccurrenceDAOHandler {
             return null;
         }
     }
+
+    private static class deleteAsyncTask extends AsyncTask<Occurrence, Void, Void> {
+        private OccurrenceDAO occurrenceDAO;
+
+        public deleteAsyncTask(OccurrenceDAO occurrenceDAO) {
+            this.occurrenceDAO = occurrenceDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Occurrence... occurrences) {
+            occurrenceDAO.deleteOccurrences(occurrences);
+            return null;
+        }
+    }
+
+
 }
