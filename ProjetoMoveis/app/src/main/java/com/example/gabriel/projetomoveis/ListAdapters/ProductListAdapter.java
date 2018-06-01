@@ -2,16 +2,19 @@ package com.example.gabriel.projetomoveis.ListAdapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gabriel.projetomoveis.R;
 
 import java.util.ArrayList;
 
+import Utils.ImageUtils;
 import objects.Product;
 
 public class ProductListAdapter extends BaseAdapter {
@@ -22,6 +25,7 @@ public class ProductListAdapter extends BaseAdapter {
     private class LayoutItems {
         TextView productName;
         TextView expirationDate;
+        ImageView productImage;
     }
 
     private static LayoutInflater inflater = null;
@@ -57,9 +61,11 @@ public class ProductListAdapter extends BaseAdapter {
         LayoutItems li = new LayoutItems();
         li.productName = convertView.findViewById(R.id.occurrenceTitleListItem);
         li.expirationDate = convertView.findViewById(R.id.occurrenceDateListItem);
+        li.productImage=convertView.findViewById(R.id.producItemImageView);
 
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
+        li.productImage.setImageBitmap(ImageUtils.getBitmapFromURI(parent.getContext(),Uri.parse(products.get(position).getProductImage())));
 
         changeBackGroundColor(position,convertView);
         return convertView;
