@@ -61,13 +61,15 @@ public class ProductListAdapter extends BaseAdapter {
         LayoutItems li = new LayoutItems();
         li.productName = convertView.findViewById(R.id.occurrenceTitleListItem);
         li.expirationDate = convertView.findViewById(R.id.occurrenceDateListItem);
-        li.productImage=convertView.findViewById(R.id.producItemImageView);
+        li.productImage = convertView.findViewById(R.id.producItemImageView);
 
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
-        li.productImage.setImageBitmap(ImageUtils.getBitmapFromURI(parent.getContext(),Uri.parse(products.get(position).getProductImage())));
+        if (products.get(position).getProductImage() != null) {
+            li.productImage.setImageBitmap(ImageUtils.getBitmapFromURI(parent.getContext(), Uri.parse(products.get(position).getProductImage())));
+        }
 
-        changeBackGroundColor(position,convertView);
+        changeBackGroundColor(position, convertView);
         return convertView;
     }
 
