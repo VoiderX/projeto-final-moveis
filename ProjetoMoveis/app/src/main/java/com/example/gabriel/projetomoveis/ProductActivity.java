@@ -2,7 +2,6 @@ package com.example.gabriel.projetomoveis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -190,11 +189,11 @@ public class ProductActivity extends AppCompatActivity {
         purchaseEditText.setText(ConverterUtils.convertDateToString(product.getPurchaseDate()));
         warrantyEditText.setText(Integer.toString(product.getWarrantyTime()));
         if (product.getProductImage() != null) {
-            productImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, Uri.parse(product.getProductImage())));
+            productImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, product.getProductImage()));
             productImageLocation = product.getProductImage();
         }
         if (product.getInvoiceImage() != null) {
-            invoiceImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, Uri.parse(product.getInvoiceImage())));
+            invoiceImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, product.getInvoiceImage()));
             invoiceImageLocation = product.getInvoiceImage();
         }
         return product;
@@ -227,9 +226,9 @@ public class ProductActivity extends AppCompatActivity {
     //Image methods
     private void loadImage(String location, int requestCode) {
         if (requestCode == IMAGE_INVOICE_REQUEST_CODE) {
-            invoiceImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, Uri.parse(location)));
+            invoiceImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, location));
         } else {
-            productImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, Uri.parse(location)));
+            productImageView.setImageBitmap(ImageUtils.getBitmapFromURI(this, location));
         }
     }
 

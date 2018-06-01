@@ -10,10 +10,9 @@ Sistema para controle de garantia de produtos comprados, o usuário pode registr
 package com.example.gabriel.projetomoveis;
 
 import android.arch.lifecycle.Observer;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,14 +20,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.example.gabriel.projetomoveis.ListAdapters.ProductListAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import database.handlers.ProductDAOHandler;
 import objects.Product;
