@@ -66,9 +66,9 @@ public class ProductListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.layout_product_list_item, null);
         }
         LayoutItems li = new LayoutItems();
-        li.productName = convertView.findViewById(R.id.occurrenceTitleListItem);
-        li.expirationDate = convertView.findViewById(R.id.occurrenceDateListItem);
-        li.productImage = convertView.findViewById(R.id.producItemImageView);
+        li.productName = convertView.findViewById(R.id.productNameListItem);
+        li.expirationDate = convertView.findViewById(R.id.productExpirationListItem);
+        li.productImage = convertView.findViewById(R.id.productItemImageView);
 
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
