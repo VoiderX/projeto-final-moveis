@@ -79,10 +79,11 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         primaryButton.setText(R.string.save_occurrence);
         secondaryButton.setText(R.string.delete_occurrence);
         occurrence = loadOccurrence(bundle);
-        final Occurrence old = new Occurrence(occurrence.getDate(),occurrence.getTitle(),occurrence.getMessage(),occurrence.getIdOwner());
+
         primaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Occurrence old = new Occurrence(occurrence.getDate(), occurrence.getTitle(), occurrence.getMessage(), occurrence.getIdOwner());
                 try {
                     occurrence.setMessage(descriptionEditText.getText().toString());
                     occurrence.setDate(ConverterUtils.convertStringToDate(dateEditText.getText().toString()));
@@ -91,6 +92,14 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        secondaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteOccurrence(occurrence);
+                finish();
             }
         });
     }
