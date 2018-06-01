@@ -3,7 +3,6 @@ package com.example.gabriel.projetomoveis;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.PluralRules;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,21 +15,13 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.example.gabriel.projetomoveis.ListAdapters.OccurrenceListAdapter;
-import com.example.gabriel.projetomoveis.ListAdapters.ProductListAdapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import Utils.ConverterUtils;
 import database.handlers.OccurrenceDAOHandler;
-import database.handlers.ProductDAOHandler;
 import objects.Occurrence;
 import objects.Product;
 
