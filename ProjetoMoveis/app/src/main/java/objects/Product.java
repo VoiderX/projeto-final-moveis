@@ -2,18 +2,13 @@ package objects;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-
 import java.io.Serializable;
-import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 
 import Utils.ConverterUtils;
 
@@ -31,7 +26,10 @@ public class Product implements Serializable {
     private String brand;
     @ColumnInfo(name = "warrantyTime")
     private int warrantyTime;
-
+    @ColumnInfo(name = "invoiceImage")
+    private String invoiceImage;
+    @ColumnInfo(name = "productImage")
+    private String productImage;
 
     public Product(Date purchaseDate, String name, String brand, int warrantyTime) {
         this.purchaseDate = purchaseDate;
@@ -97,5 +95,21 @@ public class Product implements Serializable {
 
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public String getInvoiceImage() {
+        return invoiceImage;
+    }
+
+    public void setInvoiceImage(String invoiceImage) {
+        this.invoiceImage = invoiceImage;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 }

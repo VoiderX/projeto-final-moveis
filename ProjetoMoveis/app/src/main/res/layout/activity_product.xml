@@ -101,56 +101,62 @@
         app:layout_constraintVertical_bias="0.923" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/invoiceImageView"
         android:layout_width="116dp"
         android:layout_height="85dp"
         android:layout_marginBottom="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="?android:attr/colorButtonNormal"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintEnd_toStartOf="@+id/productImageView"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.93"
+        app:layout_constraintTop_toBottomOf="@+id/warrantyEditText"
+        app:layout_constraintVertical_bias="0.29"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/productImageView"
         android:layout_width="116dp"
         android:layout_height="85dp"
         android:layout_marginBottom="100dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="?android:attr/colorButtonNormal"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.93"
+        app:layout_constraintTop_toBottomOf="@+id/warrantyEditText"
+        app:layout_constraintVertical_bias="0.29"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="116dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/product_image"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.714"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/productImageView" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="116dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/invoice_image"
         android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/invoiceImageView" />
 </android.support.constraint.ConstraintLayout>
