@@ -69,6 +69,7 @@ public class ProductListAdapter extends BaseAdapter {
             li.productImage.setImageBitmap(ImageUtils.getBitmapFromURI(parent.getContext(), Uri.parse(products.get(position).getProductImage())));
         }
 
+
         changeBackGroundColor(position, convertView);
         return convertView;
     }
