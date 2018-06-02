@@ -3,6 +3,7 @@ package com.example.gabriel.projetomoveis;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +34,9 @@ public class ProductActivity extends AppCompatActivity {
     private static final int IMAGE_INVOICE_REQUEST_CODE = 12;
     private static final int IMAGE_PRODUCT_REQUEST_CODE = 13;
 
-    EditText nameEditText, brandEditText, purchaseEditText, warrantyEditText;
-    Button primaryButton, secondaryButton;
-    ImageView invoiceImageView, productImageView;
+    private EditText nameEditText, brandEditText, purchaseEditText, warrantyEditText;
+    private Button primaryButton, secondaryButton;
+    private ImageView invoiceImageView, productImageView;
 
     private String invoiceImageLocation, productImageLocation;
 
@@ -106,6 +107,8 @@ public class ProductActivity extends AppCompatActivity {
                 }
             }
         });
+        productImageLocation = null;
+        invoiceImageLocation = null;
 
     }
 
@@ -127,6 +130,8 @@ public class ProductActivity extends AppCompatActivity {
                     product.setName(nameEditText.getText().toString());
                     product.setInvoiceImage(invoiceImageLocation);
                     product.setProductImage(productImageLocation);
+                    productImageLocation = product.getProductImage();
+                    invoiceImageLocation = product.getInvoiceImage();
                     editProduct(product);
                     finish();
                 } catch (ParseException e) {
@@ -146,6 +151,7 @@ public class ProductActivity extends AppCompatActivity {
                 openAddOccurences(getIntent().getExtras());
             }
         });
+
 
     }
 
@@ -167,6 +173,20 @@ public class ProductActivity extends AppCompatActivity {
         AboutActivity.call(this);
     }
 
+    //Method to open full images
+    private void openFullImage(String location) {
+        Uri imageUri;
+        if (location != null) {
+            imageUri = Uri.parse(location);
+        } else {
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(imageUri, "image/*");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
+    }
 
     //Method to map the interface ids inside the class
     private void startElements() {
@@ -210,8 +230,21 @@ public class ProductActivity extends AppCompatActivity {
                 callImages(IMAGE_PRODUCT_REQUEST_CODE);
             }
         });
-
-
+        //Set image views
+        productImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                openFullImage(productImageLocation);
+                return true;
+            }
+        });
+        invoiceImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                openFullImage(invoiceImageLocation);
+                return true;
+            }
+        });
     }
 
     //Method to load the product data in the fields
