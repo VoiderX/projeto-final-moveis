@@ -38,7 +38,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedUtils.setChosenTheme(this,true);
+        SharedUtils.setChosenTheme(this, true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence_manager);
         startElements();
@@ -86,6 +86,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    validadeFields();
                     Occurrence occurrence = new Occurrence(
                             ConverterUtils.convertStringToDate(dateEditText.getText().toString()),
                             titleEditText.getText().toString(), descriptionEditText.getText().toString(),
@@ -94,6 +95,8 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
                     finish();
                 } catch (ParseException e) {
                     Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,12 +114,15 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Occurrence old = new Occurrence(occurrence.getDate(), occurrence.getTitle(), occurrence.getMessage(), occurrence.getIdOwner());
                 try {
+                    validadeFields();
                     occurrence.setMessage(descriptionEditText.getText().toString());
                     occurrence.setDate(ConverterUtils.convertStringToDate(dateEditText.getText().toString()));
                     occurrence.setTitle(titleEditText.getText().toString());
                     updateOccurrence(old, occurrence);
                 } catch (ParseException e) {
                     Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(OccurrenceManagerActivity.this, R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -128,6 +134,12 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void validadeFields() throws Exception {
+        if (titleEditText.getText().toString().isEmpty()) {
+            throw new Exception();
+        }
     }
 
     private Occurrence loadOccurrence(Bundle bundle) {
@@ -146,6 +158,7 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
     private void addOccurrence(Occurrence occurrence) {
         new OccurrenceDAOHandler(getApplication()).insert(occurrence);
     }
+
 
     private void updateOccurrence(Occurrence old, Occurrence newer) {
         System.out.println(old);

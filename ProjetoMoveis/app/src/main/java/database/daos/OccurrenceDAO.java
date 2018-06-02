@@ -10,11 +10,13 @@ import java.util.List;
 
 import objects.Occurrence;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface OccurrenceDAO {
     @Query("SELECT * FROM occurrence WHERE idOwner=:id")
     LiveData<List<Occurrence>> getAllOccurrencesFromProduct(int id);
-    @Insert
+    @Insert(onConflict = REPLACE)
     void insertOccurrences(Occurrence... occurrences);
     @Delete
     void deleteOccurrences(Occurrence... occurrences);
