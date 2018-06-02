@@ -1,5 +1,6 @@
 package com.example.gabriel.projetomoveis;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.nfc.FormatException;
@@ -8,11 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import Utils.ConverterUtils;
 import Utils.ImageUtils;
@@ -74,6 +79,7 @@ public class ProductActivity extends AppCompatActivity {
     //Methods to set the buttons accordingly with its mode
     private void prepareForAdd() {
         setTitle(R.string.add_product);
+        purchaseEditText.setText(ConverterUtils.convertDateToString(new Date()));
         secondaryButton.setVisibility(View.INVISIBLE);
         primaryButton.setText(getResources().getString(R.string.add_product));
         primaryButton.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +139,13 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+        secondaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddOccurences(getIntent().getExtras());
+            }
+        });
+
     }
 
     //Methods to manage data
@@ -153,9 +166,23 @@ public class ProductActivity extends AppCompatActivity {
 
     //Method to map the interface ids inside the class
     private void startElements() {
+        final DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+            }
+        };
         nameEditText = findViewById(R.id.nameEditText);
         brandEditText = findViewById(R.id.brandEditText);
         purchaseEditText = findViewById(R.id.purchaseEditText);
+        purchaseEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.setTime(new Date());
+                new DatePickerDialog(v.getContext() ,listener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH)).show();
+            }
+        });
         warrantyEditText = findViewById(R.id.warrantyEditText);
 
         primaryButton = findViewById(R.id.primaryButton);
