@@ -23,6 +23,7 @@ import com.example.gabriel.projetomoveis.ListAdapters.OccurrenceListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import Utils.SharedUtils;
 import database.handlers.OccurrenceDAOHandler;
 import objects.Occurrence;
 import objects.Product;
@@ -36,6 +37,7 @@ public class OccurrenceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedUtils.setChosenTheme(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence);
         //Starting floating button

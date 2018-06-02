@@ -28,6 +28,7 @@ import com.example.gabriel.projetomoveis.ListAdapters.ProductListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import Utils.SharedUtils;
 import database.handlers.ProductDAOHandler;
 import objects.Product;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedUtils.setChosenTheme(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Start application

@@ -23,6 +23,7 @@ import java.util.GregorianCalendar;
 
 import Utils.ConverterUtils;
 import Utils.ImageUtils;
+import Utils.SharedUtils;
 import database.handlers.ProductDAOHandler;
 import objects.Product;
 
@@ -42,9 +43,9 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedUtils.setChosenTheme(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-
         startElements();
         Bundle bundle = getIntent().getExtras();
         if (readMode(bundle) == EDIT_MODE) {
