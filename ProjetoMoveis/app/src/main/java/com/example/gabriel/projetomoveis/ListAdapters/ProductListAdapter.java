@@ -73,7 +73,7 @@ public class ProductListAdapter extends BaseAdapter {
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
         li.productImage.setImageBitmap(cachedProducts.get(position).imageProduct);
-        if (cachedProducts.get(position).imageProduct == null) {
+        if (products.get(position).getProductImage()== null) {
             li.productName.setTextColor(Color.DKGRAY);
             li.expirationDate.setTextColor(Color.DKGRAY);
         } else {
