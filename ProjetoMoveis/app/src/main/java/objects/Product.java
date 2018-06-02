@@ -84,7 +84,7 @@ public class Product implements Serializable {
     public String getExpirationDate() {
         GregorianCalendar temp = new GregorianCalendar();
         temp.setTime(purchaseDate);
-        temp.set(GregorianCalendar.YEAR, temp.get(GregorianCalendar.YEAR) + warrantyTime);
+        temp.set(GregorianCalendar.MONTH, temp.get(GregorianCalendar.MONTH) + warrantyTime);
         return ConverterUtils.convertDateToString(temp.getTime());
     }
 
