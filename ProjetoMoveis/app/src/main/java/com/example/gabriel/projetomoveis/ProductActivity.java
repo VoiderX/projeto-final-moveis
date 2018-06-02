@@ -166,23 +166,26 @@ public class ProductActivity extends AppCompatActivity {
 
     //Method to map the interface ids inside the class
     private void startElements() {
-        final DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-            }
-        };
         nameEditText = findViewById(R.id.nameEditText);
         brandEditText = findViewById(R.id.brandEditText);
         purchaseEditText = findViewById(R.id.purchaseEditText);
+        //Date picker configurations
+        final DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
+                purchaseEditText.setText(ConverterUtils.convertDateToString(calendar.getTime()));
+            }
+        };
         purchaseEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GregorianCalendar calendar = new GregorianCalendar();
                 calendar.setTime(new Date());
-                new DatePickerDialog(v.getContext() ,listener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH)).show();
+                new DatePickerDialog(v.getContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH)).show();
             }
         });
+        //End of date picker configurations
         warrantyEditText = findViewById(R.id.warrantyEditText);
 
         primaryButton = findViewById(R.id.primaryButton);

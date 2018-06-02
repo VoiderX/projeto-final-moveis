@@ -6,7 +6,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -85,7 +84,7 @@ public class Product implements Serializable {
     public String getExpirationDate() {
         GregorianCalendar temp = new GregorianCalendar();
         temp.setTime(purchaseDate);
-        temp.set(Calendar.YEAR, temp.get(Calendar.YEAR) + warrantyTime);
+        temp.set(GregorianCalendar.YEAR, temp.get(GregorianCalendar.YEAR) + warrantyTime);
         return ConverterUtils.convertDateToString(temp.getTime());
     }
 

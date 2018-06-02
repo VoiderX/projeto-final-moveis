@@ -10,7 +10,6 @@ import java.io.InputStream;
 public class ImageUtils {
     public static Bitmap getBitmapFromURI(Context ctx, String location) {
         if (location == null) {
-            System.out.println("teste");
             return BitmapFactory.decodeResource(ctx.getResources(),android.R.drawable.ic_menu_report_image);
         }
         try {
