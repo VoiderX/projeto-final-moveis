@@ -72,12 +72,14 @@ public class ProductListAdapter extends BaseAdapter {
 
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
-
-        if (products.get(position).getProductImage() != null) {
-            li.productImage.setImageBitmap(cachedProducts.get(position).imageProduct);
+        li.productImage.setImageBitmap(cachedProducts.get(position).imageProduct);
+        if (cachedProducts.get(position).imageProduct == null) {
+            li.productName.setTextColor(Color.DKGRAY);
+            li.expirationDate.setTextColor(Color.DKGRAY);
+        } else {
+            li.productName.setTextColor(Color.WHITE);
+            li.expirationDate.setTextColor(Color.WHITE);
         }
-
-
         changeBackGroundColor(position, convertView);
         return convertView;
     }
@@ -85,8 +87,10 @@ public class ProductListAdapter extends BaseAdapter {
     private void changeBackGroundColor(int position, View convertView) {
         if (selectedProducts.contains(position)) {
             convertView.setBackgroundColor(Color.LTGRAY);
+            convertView.findViewById(R.id.selectedMarkListItem).setVisibility(View.VISIBLE);
         } else {
             convertView.setBackgroundColor(Color.TRANSPARENT);
+            convertView.findViewById(R.id.selectedMarkListItem).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -125,24 +129,30 @@ public class ProductListAdapter extends BaseAdapter {
 
             }
         } else if (cachedProducts.size() > products.size()) {
-            ArrayList<Integer> notDelete = new ArrayList<>();
+            //ArrayList<Integer> notDelete = new ArrayList<>();
             //Removing routine
-            for (int i = 0; i < products.size(); i++) {
-                for (int j = 0; j < cachedProducts.size(); j++) {
-                    if (products.get(i).getId() == cachedProducts.get(j).product.getId()) {
-                        notDelete.add(j);
-                    }
-                }
-            }
-            for (int i = 0; i < cachedProducts.size(); i++) {
-                if (!notDelete.contains(i)) {
-                    cachedProducts.remove(i);
-                }
+//            for (int i = 0; i < products.size(); i++) {
+//                for (int j = 0; j < cachedProducts.size(); j++) {
+//                    if (products.get(i).getId() == cachedProducts.get(j).product.getId()) {
+//                        notDelete.add(j);
+//                    }
+//                }
+//            }
+//            for (int i = 0; i < cachedProducts.size(); i++) {
+//                if (!notDelete.contains(i)) {
+//                    cachedProducts.remove(i);
+//                }
+//            }
+            cachedProducts.clear();
+            for (Product product : products) {
+                cachedProducts.add(new CachedProduct(product, ImageUtils.getBitmapFromURI(context, product.getProductImage())));
+
             }
             //End of removing routine
         } else {
             cachedProducts.add(new CachedProduct(products.get(products.size() - 1), ImageUtils.getBitmapFromURI(context, products.get(products.size() - 1).getProductImage())));
         }
+        super.notifyDataSetChanged();
     }
 
     private class CachedProduct {
