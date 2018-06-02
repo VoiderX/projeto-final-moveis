@@ -25,6 +25,7 @@ import java.util.List;
 
 import Utils.SharedUtils;
 import database.handlers.OccurrenceDAOHandler;
+import database.handlers.ProductDAOHandler;
 import objects.Occurrence;
 import objects.Product;
 
@@ -37,7 +38,7 @@ public class OccurrenceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedUtils.setChosenTheme(this,false);
+        SharedUtils.setChosenTheme(this, false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_occurrence);
         //Starting floating button
@@ -73,6 +74,10 @@ public class OccurrenceActivity extends AppCompatActivity {
 
     private void updateOccurrence(Bundle bundle, int position) {
         OccurrenceManagerActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ), occurrences.get(position));
+    }
+
+    private void editProduct(Bundle bundle) {
+        ProductActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ));
     }
 
     private void showAbout() {
@@ -196,16 +201,21 @@ public class OccurrenceActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        menu.getItem(0).setVisible(false);
+        getMenuInflater().inflate(R.menu.selected_one_about, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.aboutMenuItem:
+        switch (item.getItemId()) {
+            case R.id.aboutMenuItemOccurrence:
                 showAbout();
+                break;
+            case R.id.deleteProductOccurrenceMenuItem:
+                deleteProductDialog();
+                break;
+            case R.id.editProductOccurrenceMenuItem:
+                editProduct(getIntent().getExtras());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -217,6 +227,21 @@ public class OccurrenceActivity extends AppCompatActivity {
         alertBuilder.setTitle(R.string.delete_itens);
         alertBuilder.setMessage(R.string.delete_confirm_message);
         alertBuilder.setPositiveButton(R.string.yes, action);
+        alertBuilder.setNegativeButton(R.string.no, null);
+        alertBuilder.show();
+    }
+
+    private void deleteProductDialog() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle(R.string.delete_itens);
+        alertBuilder.setMessage(R.string.delete_this_product);
+        alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new ProductDAOHandler(getApplication()).delete((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
+                finish();
+            }
+        });
         alertBuilder.setNegativeButton(R.string.no, null);
         alertBuilder.show();
     }
