@@ -73,6 +73,10 @@ public class OccurrenceActivity extends AppCompatActivity {
         OccurrenceManagerActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ), occurrences.get(position));
     }
 
+    private void showAbout() {
+        AboutActivity.call(this);
+    }
+
     //Method to set this  activity
     private void startElements() {
         occurrencesList = findViewById(R.id.occurrenceList);
@@ -193,6 +197,16 @@ public class OccurrenceActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.aboutMenuItem:
+                showAbout();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //Dialog

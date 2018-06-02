@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -181,6 +182,20 @@ public class OccurrenceManagerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.aboutMenuItem:
+                showAbout();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showAbout() {
+        AboutActivity.call(this);
     }
 }
 

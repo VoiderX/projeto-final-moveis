@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAbout() {
-        System.out.println("Show about!");
+        AboutActivity.call(this);
     }
 
     //Operational methods

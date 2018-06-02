@@ -7,6 +7,7 @@ import android.nfc.FormatException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -160,7 +161,10 @@ public class ProductActivity extends AppCompatActivity {
     //Method to call another activity
     private void openAddOccurences(Bundle bundle) {
         OccurrenceActivity.call(this, (Product) bundle.getSerializable(OccurrenceActivity.PRODUCT_OBJ));
-        finish();
+    }
+
+    private void showAbout() {
+        AboutActivity.call(this);
     }
 
 
@@ -245,6 +249,16 @@ public class ProductActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.aboutMenuItem:
+                showAbout();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
