@@ -232,13 +232,14 @@ public class OccurrenceActivity extends AppCompatActivity {
     }
 
     private void deleteProductDialog() {
+        final Product product = (Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle(R.string.delete_itens);
+        alertBuilder.setTitle(product.getName());
         alertBuilder.setMessage(R.string.delete_this_product);
         alertBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new ProductDAOHandler(getApplication()).delete((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
+                new ProductDAOHandler(getApplication()).delete(product);
                 finish();
             }
         });

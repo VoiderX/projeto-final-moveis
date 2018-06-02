@@ -3,6 +3,7 @@ package com.example.gabriel.projetomoveis.ListAdapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class ProductListAdapter extends BaseAdapter {
         selectedProducts = new ArrayList<>();
         cachedProducts = new ArrayList<>();
         this.expiresMessage = expiresMessage;
-        loadCache();
+        new CacheLoader().execute();
     }
 
     @Override
@@ -72,8 +73,10 @@ public class ProductListAdapter extends BaseAdapter {
 
         li.productName.setText(products.get(position).getName());
         li.expirationDate.setText(expiresMessage + " " + products.get(position).getExpirationDate());
+
         li.productImage.setImageBitmap(cachedProducts.get(position).imageProduct);
-        if (products.get(position).getProductImage()== null) {
+        //new ImageSetter(li.productImage,cachedProducts.get(position).imageProduct).execute();
+        if (products.get(position).getProductImage() == null) {
             li.productName.setTextColor(Color.DKGRAY);
             li.expirationDate.setTextColor(Color.DKGRAY);
         } else {
@@ -152,7 +155,6 @@ public class ProductListAdapter extends BaseAdapter {
         } else {
             cachedProducts.add(new CachedProduct(products.get(products.size() - 1), ImageUtils.getBitmapFromURI(context, products.get(products.size() - 1).getProductImage())));
         }
-        super.notifyDataSetChanged();
     }
 
     private class CachedProduct {
@@ -170,4 +172,38 @@ public class ProductListAdapter extends BaseAdapter {
         loadCache();
         super.notifyDataSetChanged();
     }
+
+    private class CacheLoader extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            loadCache();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            notifyDataSetChanged();
+        }
+    }
+
+//    private class ImageSetter extends AsyncTask<Integer, Void, Void> {
+//        ImageView iv;
+//        Bitmap bm;
+//
+//        public ImageSetter(ImageView iv, Bitmap bm) {
+//            this.iv = iv;
+//            this.bm = bm;
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Integer... integers) {
+//            setView(iv, bm);
+//            return null;
+//        }
+//
+//    }
+//
+//    private void setView(ImageView iv, Bitmap image) {
+//        iv.setImageBitmap(image);
+//    }
 }
