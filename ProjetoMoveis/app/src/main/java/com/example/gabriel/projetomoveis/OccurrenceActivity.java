@@ -2,10 +2,12 @@ package com.example.gabriel.projetomoveis;
 
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
@@ -169,8 +171,14 @@ public class OccurrenceActivity extends AppCompatActivity {
     }
 
     //Methods to handle data
-    private void removeOccurrences(Occurrence... occurrences) {
-        new OccurrenceDAOHandler(getApplication()).delete(occurrences);
+    private void removeOccurrences(final Occurrence... occurrences) {
+        deleteDialog(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new OccurrenceDAOHandler(getApplication()).delete(occurrences);
+            }
+        });
+
     }
 
     //Menu methods
@@ -185,5 +193,15 @@ public class OccurrenceActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         menu.getItem(0).setVisible(false);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    //Dialog
+    private void deleteDialog(DialogInterface.OnClickListener action) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle(R.string.delete_itens);
+        alertBuilder.setMessage(R.string.delete_confirm_message);
+        alertBuilder.setPositiveButton(R.string.yes, action);
+        alertBuilder.setNegativeButton(R.string.no, null);
+        alertBuilder.show();
     }
 }

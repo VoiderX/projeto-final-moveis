@@ -27,4 +27,8 @@
     <string name="manage_occurrence">Manage Occurrence</string>
     <string name="invoice_image">Invoice Image</string>
     <string name="product_image">Product Image</string>
+    <string name="delete_confirm_message">Do you really wish to delete the selected item(s)? This action can\'t be undone!</string>
+    <string name="delete_itens">Delete items!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

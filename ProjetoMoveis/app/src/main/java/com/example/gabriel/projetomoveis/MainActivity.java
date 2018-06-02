@@ -10,8 +10,10 @@ Sistema para controle de garantia de produtos comprados, o usuário pode registr
 package com.example.gabriel.projetomoveis;
 
 import android.arch.lifecycle.Observer;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -65,8 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Methods to manage data
-    private void removeProducts(Product... products) {
-        new ProductDAOHandler(getApplication()).delete(products);
+    private void removeProducts(final Product... products) {
+        deleteDialog(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new ProductDAOHandler(getApplication()).delete(products);
+            }
+        });
     }
 
     //Methods to call another activities
@@ -189,4 +196,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Dialog
+    private void deleteDialog(DialogInterface.OnClickListener action) {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle(R.string.delete_itens);
+        alertBuilder.setMessage(R.string.delete_confirm_message);
+        alertBuilder.setPositiveButton(R.string.yes, action);
+        alertBuilder.setNegativeButton(R.string.no, null);
+        alertBuilder.show();
+    }
+
 }
+
