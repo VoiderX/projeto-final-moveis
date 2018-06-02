@@ -31,4 +31,11 @@
     <string name="delete_itens">Delete items!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="about_app">Application to help you manage the  warranty time of your devices, the app also supports the storage of pictures of their invoice, and also gives a way to track possible \"occurrences\" with them.</string>
+    <string name="author">Author :</string>
+    <string name="author_ra">Author\'s RA :</string>
+    <string name="author_course">Author\'s Course :</string>
+    <string name="gabriel_de_abreu">Gabriel de Abreu</string>
+    <string name="ra_number">1581678</string>
+    <string name="computer_engineering">Computer Engineering</string>
 </resources>
