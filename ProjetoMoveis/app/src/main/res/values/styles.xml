@@ -17,6 +17,7 @@
     <style name="AppThemeRed" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@android:color/holo_red_light</item>
         <item name="colorPrimaryDark">@android:color/holo_red_dark</item>
+        <item name="colorAccent">@android:color/holo_red_light</item>
     </style>
 
     <style name="AppTheme.NoActionBarRed">
@@ -24,12 +25,14 @@
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@android:color/holo_red_light</item>
         <item name="colorPrimaryDark">@android:color/holo_red_dark</item>
+        <item name="colorAccent">@android:color/holo_red_light</item>
     </style>
 
     <!--Gren Theme -->
     <style name="AppThemeGreen" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@android:color/holo_green_light</item>
         <item name="colorPrimaryDark">@android:color/holo_green_dark</item>
+        <item name="colorAccent">@android:color/holo_green_light</item>
     </style>
 
     <style name="AppTheme.NoActionBarGreen">
@@ -37,6 +40,7 @@
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@android:color/holo_green_light</item>
         <item name="colorPrimaryDark">@android:color/holo_green_dark</item>
+        <item name="colorAccent">@android:color/holo_green_light</item>
     </style>
 
     <!--Other -->
