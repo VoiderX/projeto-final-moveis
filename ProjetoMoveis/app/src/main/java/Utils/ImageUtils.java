@@ -16,7 +16,7 @@ public class ImageUtils {
             System.out.println(location);
             InputStream imageStream = ctx.getContentResolver().openInputStream(Uri.parse(location));
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
+            options.inSampleSize = 20;
             Bitmap bm = BitmapFactory.decodeStream(imageStream, null, options);
             imageStream.close();
             return bm;

@@ -30,6 +30,7 @@ import objects.Product;
 public class ProductActivity extends AppCompatActivity {
     private static final int EDIT_MODE = 1;
     private static final int ADD_MODE = 2;
+    private static final int EDIT_WITHOUT_OPEN = 3;
     private static final String MODE = "MODE";
 
     private static final int IMAGE_INVOICE_REQUEST_CODE = 12;
@@ -43,15 +44,27 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedUtils.setChosenTheme(this,true);
+        SharedUtils.setChosenTheme(this, true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         startElements();
         Bundle bundle = getIntent().getExtras();
-        if (readMode(bundle) == EDIT_MODE) {
-            prepareForEdit(bundle);
-        } else {
-            prepareForAdd();
+//        if (readMode(bundle) == EDIT_MODE) {
+//            prepareForEdit(bundle);
+//        } else {
+//            prepareForAdd();
+//        }
+
+        switch (readMode(bundle)) {
+            case EDIT_MODE:
+                prepareForEdit(bundle);
+                break;
+            case ADD_MODE:
+                prepareForAdd();
+                break;
+            case EDIT_WITHOUT_OPEN:
+                prepareForEditWithoutOpen(bundle);
+                break;
         }
         //Enabling UP button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,6 +88,13 @@ public class ProductActivity extends AppCompatActivity {
     public static void call(Context context, Product product) {
         Intent intent = new Intent(context, ProductActivity.class);
         intent.putExtra(MODE, EDIT_MODE);
+        intent.putExtra(MainActivity.PRODUCT_OBJ, product);
+        context.startActivity(intent);
+    }
+
+    public static void callWithoutOpenOccurrences(Context context, Product product) {
+        Intent intent = new Intent(context, ProductActivity.class);
+        intent.putExtra(MODE, EDIT_WITHOUT_OPEN);
         intent.putExtra(MainActivity.PRODUCT_OBJ, product);
         context.startActivity(intent);
     }
@@ -112,6 +132,41 @@ public class ProductActivity extends AppCompatActivity {
         invoiceImageLocation = null;
 
     }
+
+    private void prepareForEditWithoutOpen(Bundle bundle) {
+        setTitle(getString(R.string.manage_product));
+        final Product product = loadProductData(bundle);
+        secondaryButton.setVisibility(View.INVISIBLE);
+        primaryButton.setText(R.string.save);
+        //secondaryButton.setText(R.string.open_occurrences);
+
+        primaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    validateFields();
+                    product.setWarrantyTime(Integer.parseInt(warrantyEditText.getText().toString()));
+                    product.setPurchaseDate(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()));
+                    product.setBrand(brandEditText.getText().toString());
+                    product.setName(nameEditText.getText().toString());
+                    product.setInvoiceImage(invoiceImageLocation);
+                    product.setProductImage(productImageLocation);
+                    productImageLocation = product.getProductImage();
+                    invoiceImageLocation = product.getInvoiceImage();
+                    editProduct(product);
+                    finish();
+                } catch (ParseException e) {
+                    Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
+                } catch (FormatException e) {
+                    Toast.makeText(v.getContext(), R.string.invalid_input, Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(v.getContext(), R.string.unknow_error, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
 
     private void prepareForEdit(final Bundle bundle) {
         setTitle(getString(R.string.manage_product));

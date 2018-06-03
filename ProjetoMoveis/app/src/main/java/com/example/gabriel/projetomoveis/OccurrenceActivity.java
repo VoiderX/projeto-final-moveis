@@ -77,7 +77,7 @@ public class OccurrenceActivity extends AppCompatActivity {
     }
 
     private void editProduct(Bundle bundle) {
-        ProductActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ));
+        ProductActivity.callWithoutOpenOccurrences(this,(Product) bundle.getSerializable(PRODUCT_OBJ));
     }
 
     private void showAbout() {
