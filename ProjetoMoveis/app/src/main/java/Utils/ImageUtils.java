@@ -13,7 +13,6 @@ public class ImageUtils {
             return BitmapFactory.decodeResource(ctx.getResources(), android.R.drawable.ic_menu_report_image);
         }
         try {
-            System.out.println(location);
             InputStream imageStream = ctx.getContentResolver().openInputStream(Uri.parse(location));
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = SharedUtils.readCompressionLevel(ctx);
