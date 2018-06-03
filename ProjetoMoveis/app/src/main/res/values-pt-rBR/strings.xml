@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RMA Assistant</string>
+    <string name="create_registry">Inserir novo produto</string>
+    <string name="show_all">Mostrar todos os produtos</string>
+    <string name="expires_on">"Essa garantia expira em "</string>
+    <string name="about">Sobre</string>
+    <string name="add_product">Adicionar Produto</string>
+    <string name="delete_product">Remover Produto</string>
+    <string name="edit_product">Editar Produto</string>
+    <string name="product_name">Nome do Produto</string>
+    <string name="product_brand">Marca do Produto</string>
+    <string name="purchase_date">Data da compra</string>
+    <string name="warranty_time">Garantia em meses</string>
+    <string name="save">Salvar</string>
+    <string name="add_occurrence">Adicionar Occorrência</string>
+    <string name="invalid_date">Data inválida!</string>
+    <string name="invalid_input">Entrada inválida!</string>
+    <string name="unknow_error">Erro desconhecido, contate o desenvolvedor!</string>
+    <string name="occurrence_date">Data da ocorrência</string>
+    <string name="description_hint">Descrição (Opcional)</string>
+    <string name="occurrence_title">Título da Ocorrência</string>
+    <string name="save_occurrence">Salvar Ocorrência</string>
+    <string name="delete_occurrence">Remover Ocorrência</string>
+    <string name="open_occurrences">Abrir Ocorrências</string>
+    <string name="manage_product">Gerenciar Produto</string>
+    <string name="manage_occurrence">Gerenciar Ocorrência</string>
+    <string name="invoice_image">Imagem da nota fiscal</string>
+    <string name="product_image">Imagem do produto</string>
+    <string name="delete_confirm_message">Você realmente deseja remover o(s) item(ns) selecionado(s)? Esta ação não pode ser desfeita!</string>
+    <string name="delete_itens">Remover Itens!</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="author">Autor:</string>
+    <string name="author_ra">RA do autor:</string>
+    <string name="author_course">Curso do autor:</string>
+    <string name="computer_engineering">Engenharia de Computação</string>
+    <string name="compression_level">Nível de compressão:</string>
+    <string name="delete_this_product">Você tem certeza que quer remover esse PRODUTO?</string>
+    <string name="available_themes">Altere seu tema clicando em uma cor!</string>
+    <string name="image_compression">Escolha o nível de compressão das imagens, quanto maior mais leve a aplicação será, no entanto a qualidade das imagens será reduzida!</string>
+    <string name="about_app">Aplicação para ajudar você gerenciar o tempo de garantia dos seus equipamentos, a aplicação suporta que sejam guardadas fotos das notas fiscais dos mesmos, e também permite que sejam registradas ocorrências em relação aos produtos.</string>
+</resources>

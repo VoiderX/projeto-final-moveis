@@ -16,7 +16,7 @@
     <string name="invalid_date">Invalid date!</string>
     <string name="invalid_input">Invalid Input!</string>
     <string name="unknow_error">Unknown Error, contact the developer!</string>
-    <string name="title_activity_occurrence">OccurrenceActivity</string>
+    <string name="title_activity_occurrence" translatable="false">OccurrenceActivity</string>
     <string name="occurrence_date">Occurrence Date</string>
     <string name="description_hint">Description (Optional)</string>
     <string name="occurrence_title">Occurrence Title</string>
@@ -35,8 +35,8 @@
     <string name="author">Author :</string>
     <string name="author_ra">Author\'s RA :</string>
     <string name="author_course">Author\'s Course :</string>
-    <string name="gabriel_de_abreu">Gabriel de Abreu</string>
-    <string name="ra_number">1581678</string>
+    <string name="gabriel_de_abreu" translatable="false">Gabriel de Abreu</string>
+    <string name="ra_number" translatable="false">1581678</string>
     <string name="computer_engineering">Computer Engineering</string>
     <string name="available_themes">Change your theme by clicking in a color!</string>
     <string name="delete_this_product">Are you sure you want to delete this PRODUCT?</string>
