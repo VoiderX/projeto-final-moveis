@@ -10,9 +10,22 @@ public class SharedUtils {
     private static final String FILE_NAME = "RMA_ASSISTANT";
     private static final String THEME_ID = "THEME_ID";
 
+    private static final String COMPRESSION_LEVEL_ID = "COMPRESSION_LEVEL_ID";
+
     public static final String RED = "RED";
     public static final String BLUE = "BLUE";
     public static final String GREEN = "GREEN";
+
+    public static void saveCompressionLevel(Context context, int level) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(COMPRESSION_LEVEL_ID, level);
+        editor.commit();
+    }
+
+    public static int readCompressionLevel(Context context) {
+        return context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE).getInt(COMPRESSION_LEVEL_ID, 4);
+    }
 
     public static void saveChosenTheme(Context context, String theme) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);

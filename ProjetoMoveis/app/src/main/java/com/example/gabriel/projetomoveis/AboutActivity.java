@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import Utils.SharedUtils;
 
 public class AboutActivity extends AppCompatActivity {
     private ImageView redTheme, greeTheme, blueTheme;
+    private SeekBar qualitySeekBar;
+    private TextView levelText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedUtils.setChosenTheme(this,true);
+        SharedUtils.setChosenTheme(this, true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -36,6 +40,28 @@ public class AboutActivity extends AppCompatActivity {
         redTheme = findViewById(R.id.redTheme);
         greeTheme = findViewById(R.id.greenTheme);
         blueTheme = findViewById(R.id.blueTheme);
+        qualitySeekBar = findViewById(R.id.qualitySeekBar);
+        qualitySeekBar.setProgress(SharedUtils.readCompressionLevel(this) - 1);
+        levelText = findViewById(R.id.levelText);
+        levelText.setText(Integer.toString(SharedUtils.readCompressionLevel(this)));
+        qualitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int realValue = progress + 1;
+                levelText.setText(Integer.toString(realValue));
+                SharedUtils.saveCompressionLevel(getApplicationContext(), realValue);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                restartApp();
+            }
+        });
 
         redTheme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +99,11 @@ public class AboutActivity extends AppCompatActivity {
 
     private void setThemeActvity(String theme) {
         SharedUtils.saveChosenTheme(this, theme);
-        SharedUtils.setChosenTheme(this,true);
+        SharedUtils.setChosenTheme(this, true);
+        restartApp();
+    }
+
+    private void restartApp() {
         TaskStackBuilder.create(this)
                 .addNextIntent(new Intent(this, MainActivity.class))
                 .addNextIntent(this.getIntent())
