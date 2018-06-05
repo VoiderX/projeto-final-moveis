@@ -24,7 +24,7 @@ public class SharedUtils {
     }
 
     public static int readCompressionLevel(Context context) {
-        return context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE).getInt(COMPRESSION_LEVEL_ID, 4);
+        return context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE).getInt(COMPRESSION_LEVEL_ID, 8);
     }
 
     public static void saveChosenTheme(Context context, String theme) {
@@ -35,7 +35,7 @@ public class SharedUtils {
     }
 
     public static void setChosenTheme(Context context, boolean hasActionBar) {
-        String theme = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE).getString(THEME_ID, BLUE);
+        String theme = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE).getString(THEME_ID, GREEN);
         switch (theme) {
             case RED:
                 if (hasActionBar) {
