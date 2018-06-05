@@ -41,14 +41,14 @@ public class AboutActivity extends AppCompatActivity {
         greeTheme = findViewById(R.id.greenTheme);
         blueTheme = findViewById(R.id.blueTheme);
         qualitySeekBar = findViewById(R.id.qualitySeekBar);
-        qualitySeekBar.setProgress(SharedUtils.readCompressionLevel(this) - 1);
+        qualitySeekBar.setProgress(SharedUtils.readCompressionLevel(this) - 4);
         levelText = findViewById(R.id.levelText);
-        levelText.setText(Integer.toString(SharedUtils.readCompressionLevel(this)));
+        levelText.setText(Integer.toString(SharedUtils.readCompressionLevel(this)-3));
         qualitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int realValue = progress + 1;
-                levelText.setText(Integer.toString(realValue));
+                int realValue = progress + 4;
+                levelText.setText(Integer.toString(progress+1));
                 SharedUtils.saveCompressionLevel(getApplicationContext(), realValue);
             }
 
