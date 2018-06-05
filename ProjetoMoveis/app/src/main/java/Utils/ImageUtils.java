@@ -20,8 +20,7 @@ public class ImageUtils {
             imageStream.close();
             return bm;
         } catch (Exception e) {
-
+            return BitmapFactory.decodeResource(ctx.getResources(), android.R.drawable.ic_menu_report_image);
         }
-        return null;
     }
 }
