@@ -76,13 +76,9 @@ public class ProductListAdapter extends BaseAdapter {
 
         li.productImage.setImageBitmap(cachedProducts.get(position).imageProduct);
         //new ImageSetter(li.productImage,cachedProducts.get(position).imageProduct).execute();
-        if (products.get(position).getProductImage() == null) {
-            li.productName.setTextColor(Color.DKGRAY);
-            li.expirationDate.setTextColor(Color.DKGRAY);
-        } else {
-            li.productName.setTextColor(Color.WHITE);
-            li.expirationDate.setTextColor(Color.WHITE);
-        }
+
+        li.productName.setTextColor(Color.WHITE);
+        li.expirationDate.setTextColor(Color.WHITE);
         changeBackGroundColor(position, convertView);
         return convertView;
     }
