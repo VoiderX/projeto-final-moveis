@@ -1,6 +1,7 @@
 package com.example.gabriel.projetomoveis;
 
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -133,6 +134,7 @@ public class ProductActivity extends AppCompatActivity {
 
     }
 
+    //Open edit product without de open occurrences button
     private void prepareForEditWithoutOpen(Bundle bundle) {
         setTitle(getString(R.string.manage_product));
         final Product product = loadProductData(bundle);
@@ -367,23 +369,33 @@ public class ProductActivity extends AppCompatActivity {
 
     private void callImages(int requestCode) {
         Intent imageIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        imageIntent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        imageIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         imageIntent.setType("image/*");
         startActivityForResult(imageIntent, requestCode);
+    }
+
+    private String resolveFlagsAndSetImages(Intent data, int requestCode) {
+        if (data != null) {
+            final int takeFlags = data.getFlags() & Intent.FLAG_GRANT_READ_URI_PERMISSION;
+            ContentResolver resolver = this.getContentResolver();
+            Uri temp = data.getData();
+            resolver.takePersistableUriPermission(temp, takeFlags);
+            loadImage(temp.toString(), requestCode);
+            return temp.toString();
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_INVOICE_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (data != null) {
-                loadImage(data.getData().toString(), IMAGE_INVOICE_REQUEST_CODE);
-                invoiceImageLocation = data.getData().toString();
-            }
-        } else {
-            if (data != null) {
-                loadImage(data.getData().toString(), IMAGE_PRODUCT_REQUEST_CODE);
-                productImageLocation = data.getData().toString();
-            }
+            invoiceImageLocation = resolveFlagsAndSetImages(data, requestCode);
+        } else if (requestCode == IMAGE_PRODUCT_REQUEST_CODE && resultCode == RESULT_OK) {
+            productImageLocation = resolveFlagsAndSetImages(data, requestCode);
         }
     }
 }
