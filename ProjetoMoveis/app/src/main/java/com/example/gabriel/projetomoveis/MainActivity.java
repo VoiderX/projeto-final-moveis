@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.gabriel.projetomoveis.ListAdapters.ProductListAdapter;
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Product> products;
     private ListView productsList;
     private ProductListAdapter adapter;
-
+    private TextView infoText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedUtils.setChosenTheme(this,true);
@@ -62,7 +63,13 @@ public class MainActivity extends AppCompatActivity {
         //Setting multi-choice configuration
         productsList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         productsList.setMultiChoiceModeListener(getMultiChoiceModeListener());
+        infoText=findViewById(R.id.infoText);
         products = new ArrayList<>();
+        if(products.size()>0){
+            infoText.setVisibility(View.GONE);
+        }else{
+            infoText.setVisibility(View.VISIBLE);
+        }
         adapter = new ProductListAdapter(this, products, getString(R.string.expires_on));
         productsList.setAdapter(adapter);
     }
@@ -111,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Product> products) {
                 setProducts(products);
                 adapter.notifyDataSetChanged();
+                if(products.size()>0){
+                    infoText.setVisibility(View.GONE);
+                }else{
+                    infoText.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
