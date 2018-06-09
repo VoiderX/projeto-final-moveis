@@ -20,4 +20,6 @@ public interface ProductDAO {
     void deleteProducts(Product... products);
     @Update
     void updateProducts(Product... products);
+    @Query("SELECT * FROM product WHERE id=:id")
+    Product getProduct(int id);
 }

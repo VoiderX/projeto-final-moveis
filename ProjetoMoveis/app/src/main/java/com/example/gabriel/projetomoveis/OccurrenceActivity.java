@@ -79,7 +79,7 @@ public class OccurrenceActivity extends AppCompatActivity {
     }
 
     private void editProduct(Bundle bundle) {
-        ProductActivity.callWithoutOpenOccurrences(this,(Product) bundle.getSerializable(PRODUCT_OBJ));
+        ProductActivity.callWithoutOpenOccurrences(this, (Product) bundle.getSerializable(PRODUCT_OBJ));
     }
 
     private void showAbout() {
@@ -97,11 +97,11 @@ public class OccurrenceActivity extends AppCompatActivity {
             }
         });
         occurrencesList.setMultiChoiceModeListener(getMultiChoiceModeListener());
-        infoText=findViewById(R.id.infoTextOccurrence);
+        infoText = findViewById(R.id.infoTextOccurrence);
         occurrences = new ArrayList<>();
-        if(occurrences.size()>0){
+        if (occurrences.size() > 0) {
             infoText.setVisibility(View.GONE);
-        }else{
+        } else {
             infoText.setVisibility(View.VISIBLE);
         }
         adapter = new OccurrenceListAdapter(this, occurrences);
@@ -120,17 +120,26 @@ public class OccurrenceActivity extends AppCompatActivity {
         return this.occurrences;
     }
 
-    private void startDatabaseObserver(int id) {
+    private void startDatabaseObserver(final int id) {
         new OccurrenceDAOHandler(getApplication(), id).getAllOccurrences().observe(this, new Observer<List<Occurrence>>() {
             @Override
             public void onChanged(@Nullable List<Occurrence> occurrences) {
                 setOccurrences(occurrences);
-                if(occurrences.size()>0){
+                if (occurrences.size() > 0) {
                     infoText.setVisibility(View.GONE);
-                }else{
+                } else {
                     infoText.setVisibility(View.VISIBLE);
                 }
                 adapter.notifyDataSetChanged();
+            }
+        });
+        new ProductDAOHandler(getApplication()).getAllProducts().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(@Nullable List<Product> products) {
+                Product tempProduct = new ProductDAOHandler(getApplication()).getProduct(id);
+                if (tempProduct != null) {
+                    setTitle(tempProduct.getName());
+                }
             }
         });
     }
