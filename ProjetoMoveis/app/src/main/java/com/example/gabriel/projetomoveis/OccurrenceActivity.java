@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.gabriel.projetomoveis.ListAdapters.OccurrenceListAdapter;
 
@@ -35,6 +36,7 @@ public class OccurrenceActivity extends AppCompatActivity {
     private ArrayList<Occurrence> occurrences;
     private OccurrenceListAdapter adapter;
     private Toolbar toolbar;
+    private TextView infoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +97,15 @@ public class OccurrenceActivity extends AppCompatActivity {
             }
         });
         occurrencesList.setMultiChoiceModeListener(getMultiChoiceModeListener());
+        infoText=findViewById(R.id.infoTextOccurrence);
         occurrences = new ArrayList<>();
+        if(occurrences.size()>0){
+            infoText.setVisibility(View.GONE);
+        }else{
+            infoText.setVisibility(View.VISIBLE);
+        }
         adapter = new OccurrenceListAdapter(this, occurrences);
+
         occurrencesList.setAdapter(adapter);
     }
 
@@ -116,6 +125,11 @@ public class OccurrenceActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Occurrence> occurrences) {
                 setOccurrences(occurrences);
+                if(occurrences.size()>0){
+                    infoText.setVisibility(View.GONE);
+                }else{
+                    infoText.setVisibility(View.VISIBLE);
+                }
                 adapter.notifyDataSetChanged();
             }
         });

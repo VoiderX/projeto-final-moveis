@@ -43,4 +43,5 @@
     <string name="image_compression">Choose the image compression level, the higher, the ligther the app will be, however the images\' quality will be reduced!</string>
     <string name="compression_level">Compression level:</string>
     <string name="product_info_message">You can start by adding a product clicking in the \"+\" sign in the top bar!</string>
+    <string name="occurrence_info_message">You can add an occurrence by clicking in the floating button at the bottom of the screen!</string>
 </resources>

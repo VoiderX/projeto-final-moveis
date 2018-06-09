@@ -40,4 +40,6 @@
     <string name="available_themes">Altere seu tema clicando em uma cor!</string>
     <string name="image_compression">Escolha o nível de compressão das imagens, quanto maior mais leve a aplicação será, no entanto a qualidade das imagens será reduzida!</string>
     <string name="about_app">Aplicação para ajudar você gerenciar o tempo de garantia dos seus equipamentos, a aplicação suporta que sejam guardadas fotos das notas fiscais dos mesmos, e também permite que sejam registradas ocorrências em relação aos produtos.</string>
+    <string name="product_info_message">Você pode começar adicionando um produto ao clicar no sinal de + na barra superior!</string>
+    <string name="occurrence_info_message">Você pode adicionar uma ocorrêcia clicando no botão flutuante na parte inferior da tela!</string>
 </resources>
