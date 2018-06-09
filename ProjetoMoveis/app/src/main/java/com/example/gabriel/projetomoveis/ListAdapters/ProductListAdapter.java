@@ -128,26 +128,20 @@ public class ProductListAdapter extends BaseAdapter {
 
             }
         } else if (cachedProducts.size() > products.size()) {
-            //ArrayList<Integer> notDelete = new ArrayList<>();
-            //Removing routine
-//            for (int i = 0; i < products.size(); i++) {
-//                for (int j = 0; j < cachedProducts.size(); j++) {
-//                    if (products.get(i).getId() == cachedProducts.get(j).product.getId()) {
-//                        notDelete.add(j);
-//                    }
-//                }
-//            }
-//            for (int i = 0; i < cachedProducts.size(); i++) {
-//                if (!notDelete.contains(i)) {
-//                    cachedProducts.remove(i);
-//                }
-//            }
-            cachedProducts.clear();
+            ArrayList<Integer> idsToKeep = new ArrayList<>();
+            ArrayList<CachedProduct> newCache = new ArrayList<>();
             for (Product product : products) {
-                cachedProducts.add(new CachedProduct(product, ImageUtils.getBitmapFromURI(context, product.getProductImage())));
-
+                idsToKeep.add(product.getId());
             }
-            //End of removing routine
+            for (Integer id : idsToKeep) {
+                for (CachedProduct cp : cachedProducts) {
+                    if (cp.product.getId() == id) {
+                        newCache.add(cp);
+                    }
+                }
+            }
+            cachedProducts.clear();
+            cachedProducts = newCache;
         } else {
             cachedProducts.add(new CachedProduct(products.get(products.size() - 1), ImageUtils.getBitmapFromURI(context, products.get(products.size() - 1).getProductImage())));
         }
