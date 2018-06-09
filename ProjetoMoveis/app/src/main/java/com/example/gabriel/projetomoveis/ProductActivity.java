@@ -122,7 +122,7 @@ public class ProductActivity extends AppCompatActivity {
                     finish();
                 } catch (ParseException e) {
                     Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
-                } catch (FormatException e) {
+                } catch (FormatException | NumberFormatException e) {
                     Toast.makeText(v.getContext(), R.string.invalid_input, Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(v.getContext(), R.string.unknow_error, Toast.LENGTH_SHORT).show();
@@ -134,39 +134,46 @@ public class ProductActivity extends AppCompatActivity {
 
     }
 
-    //Open edit product without de open occurrences button
+
+    private class editClickListener implements View.OnClickListener {
+        Product product;
+
+        public editClickListener(Product product) {
+            this.product = product;
+        }
+
+        @Override
+        public void onClick(View v) {
+            try {
+                validateFields();
+                product.setWarrantyTime(Integer.parseInt(warrantyEditText.getText().toString()));
+                product.setPurchaseDate(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()));
+                product.setBrand(brandEditText.getText().toString());
+                product.setName(nameEditText.getText().toString());
+                product.setInvoiceImage(invoiceImageLocation);
+                product.setProductImage(productImageLocation);
+                productImageLocation = product.getProductImage();
+                invoiceImageLocation = product.getInvoiceImage();
+                editProduct(product);
+                finish();
+            } catch (ParseException e) {
+                Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
+            } catch (FormatException|NumberFormatException e) {
+                Toast.makeText(v.getContext(), R.string.invalid_input, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(v.getContext(), R.string.unknow_error, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //Open edit product without the open occurrences button
     private void prepareForEditWithoutOpen(Bundle bundle) {
         setTitle(getString(R.string.manage_product));
         final Product product = loadProductData(bundle);
         secondaryButton.setVisibility(View.INVISIBLE);
         primaryButton.setText(R.string.save);
         //secondaryButton.setText(R.string.open_occurrences);
-
-        primaryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    validateFields();
-                    product.setWarrantyTime(Integer.parseInt(warrantyEditText.getText().toString()));
-                    product.setPurchaseDate(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()));
-                    product.setBrand(brandEditText.getText().toString());
-                    product.setName(nameEditText.getText().toString());
-                    product.setInvoiceImage(invoiceImageLocation);
-                    product.setProductImage(productImageLocation);
-                    productImageLocation = product.getProductImage();
-                    invoiceImageLocation = product.getInvoiceImage();
-                    editProduct(product);
-                    finish();
-                } catch (ParseException e) {
-                    Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
-                } catch (FormatException e) {
-                    Toast.makeText(v.getContext(), R.string.invalid_input, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(v.getContext(), R.string.unknow_error, Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+        primaryButton.setOnClickListener(new editClickListener(product));
     }
 
 
@@ -177,31 +184,7 @@ public class ProductActivity extends AppCompatActivity {
         primaryButton.setText(R.string.save);
         secondaryButton.setText(R.string.open_occurrences);
 
-        primaryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    validateFields();
-                    product.setWarrantyTime(Integer.parseInt(warrantyEditText.getText().toString()));
-                    product.setPurchaseDate(ConverterUtils.convertStringToDate(purchaseEditText.getText().toString()));
-                    product.setBrand(brandEditText.getText().toString());
-                    product.setName(nameEditText.getText().toString());
-                    product.setInvoiceImage(invoiceImageLocation);
-                    product.setProductImage(productImageLocation);
-                    productImageLocation = product.getProductImage();
-                    invoiceImageLocation = product.getInvoiceImage();
-                    editProduct(product);
-                    finish();
-                } catch (ParseException e) {
-                    Toast.makeText(v.getContext(), R.string.invalid_date, Toast.LENGTH_SHORT).show();
-                } catch (FormatException e) {
-                    Toast.makeText(v.getContext(), R.string.invalid_input, Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(v.getContext(), R.string.unknow_error, Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+        primaryButton.setOnClickListener(new editClickListener(product));
 
         secondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override

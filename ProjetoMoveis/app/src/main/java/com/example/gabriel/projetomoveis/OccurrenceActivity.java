@@ -37,7 +37,7 @@ public class OccurrenceActivity extends AppCompatActivity {
     private OccurrenceListAdapter adapter;
     private Toolbar toolbar;
     private TextView infoText;
-
+    private Product activityProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedUtils.setChosenTheme(this, false);
@@ -59,6 +59,7 @@ public class OccurrenceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Setting title and activating database observer
         Product product = ((Product) getIntent().getExtras().getSerializable(PRODUCT_OBJ));
+        activityProduct=product;
         setTitle(product.getName());
         startDatabaseObserver(product.getId());
     }
@@ -78,8 +79,8 @@ public class OccurrenceActivity extends AppCompatActivity {
         OccurrenceManagerActivity.call(this, (Product) bundle.getSerializable(PRODUCT_OBJ), occurrences.get(position));
     }
 
-    private void editProduct(Bundle bundle) {
-        ProductActivity.callWithoutOpenOccurrences(this, (Product) bundle.getSerializable(PRODUCT_OBJ));
+    private void editProduct(Product product) {
+        ProductActivity.callWithoutOpenOccurrences(this, product);
     }
 
     private void showAbout() {
@@ -139,6 +140,7 @@ public class OccurrenceActivity extends AppCompatActivity {
                 Product tempProduct = new ProductDAOHandler(getApplication()).getProduct(id);
                 if (tempProduct != null) {
                     setTitle(tempProduct.getName());
+                    activityProduct=tempProduct;
                 }
             }
         });
@@ -238,7 +240,7 @@ public class OccurrenceActivity extends AppCompatActivity {
                 deleteProductDialog();
                 break;
             case R.id.editProductOccurrenceMenuItem:
-                editProduct(getIntent().getExtras());
+                editProduct(activityProduct);
                 break;
         }
         return super.onOptionsItemSelected(item);
